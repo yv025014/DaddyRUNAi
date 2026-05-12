@@ -8,3 +8,4 @@ data/performance_history.json
 logs/
 *.log
 .DS_Store
+.claude/
