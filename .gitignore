@@ -1,0 +1,10 @@
+.env
+venv/
+__pycache__/
+*.pyc
+output/
+data/publish_log.json
+data/performance_history.json
+logs/
+*.log
+.DS_Store
