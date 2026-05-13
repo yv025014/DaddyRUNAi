@@ -1,36 +1,136 @@
+"""
+圖片生成服務 - 優先順序：
+1. InstantID (HF Space, 免費, 人臉一致性)
+2. Novita.ai IP-Adapter (付費 ~$0.002/張, 角色一致)
+3. fal.ai FLUX Kontext (付費, 角色一致)
+4. Segmind consistent-character (需 credits)
+5. HuggingFace FLUX.1-schnell (免費, 純文字)
+"""
+
 import os
 import requests
 import base64
 import pathlib
+import shutil
 from PIL import Image
 
-# 參考圖路徑（固定人設來源）
-REF_IMAGE_PATH = pathlib.Path(__file__).parent.parent / "ref" / "人物參考圖.png"
+# ── 路徑設定 ──────────────────────────────────────
+REF_DIR        = pathlib.Path(__file__).parent.parent / "ref"
+REF_IMAGE_PATH = REF_DIR / "人物參考圖.png"
+CHRIS_FACE     = REF_DIR / "chris_face_crop.png"
+CHRIS_FRONT    = REF_DIR / "chris_front.png"
 
-# 場景描述 prompt 前綴（風格指定）
+# ── 風格前綴 ──────────────────────────────────────
 STYLE_PREFIX = (
     "Korean manhwa webtoon illustration style, clean flat color, soft shading, "
     "thin precise outlines, children picture book style, soft pastel palette, "
     "no text in image, no watermark. "
 )
 
-# 角色強化描述（無參考圖時用 prompt 補強一致性）
+# ── 角色文字描述（純文字備援用）────────────────────
 CHAR_DESC = (
-    "Main character: Asian man (Chris) with short dark brown hair, NO glasses, "
+    "Main character: Asian man (Chris/把拔) with short dark brown hair, NO glasses, "
     "wearing pink t-shirt and khaki shorts, Apple Watch on wrist. "
     "Beside him: 5-year-old Asian girl (Anna) with brown bob haircut and straight bangs, "
     "wearing light blue dress with daisy embroidery, white sandals. "
 )
 
+# ── 固定角色服裝的強化 prompt ─────────────────────
+OUTFIT_ENFORCE = (
+    "Chris wearing pink t-shirt and khaki shorts, Apple Watch. "
+    "Anna wearing light blue dress with daisy embroidery, white sandals. "
+)
 
-def _read_ref_image_b64() -> str:
-    """讀取參考圖並轉為 base64"""
-    return base64.b64encode(REF_IMAGE_PATH.read_bytes()).decode()
+
+def _read_ref_image_b64(path: pathlib.Path = REF_IMAGE_PATH) -> str:
+    """讀取圖片並轉為 base64"""
+    return base64.b64encode(path.read_bytes()).decode()
 
 
-# ─────────────────────────────────────────────
-# 方案 A：Novita.ai IP-Adapter（角色一致性，極低成本 ~$0.002/張）
-# ─────────────────────────────────────────────
+def _ensure_crops():
+    """確保臉部裁切圖已存在，否則自動生成"""
+    if CHRIS_FACE.exists() and CHRIS_FRONT.exists():
+        return True
+    if not REF_IMAGE_PATH.exists():
+        print("[Image] 找不到參考圖：ref/人物參考圖.png")
+        return False
+    try:
+        img = Image.open(REF_IMAGE_PATH)
+        w, h = img.size  # 預期 ~1402 x 1122
+
+        # Chris 正面全身（左 1/3，上 1/2）
+        chris_front = img.crop((100, 0, 520, 560))
+        chris_front.save(str(CHRIS_FRONT))
+
+        # Chris 臉部特寫（正面頭肩部）
+        chris_face = img.crop((265, 65, 460, 240))
+        chris_face.resize((512, 512), Image.LANCZOS).save(str(CHRIS_FACE))
+
+        print(f"[Image] 臉部裁切完成：{CHRIS_FACE}")
+        return True
+    except Exception as e:
+        print(f"[Image] 自動裁切失敗：{e}")
+        return False
+
+
+# ─────────────────────────────────────────────────
+# 方案 A：InstantID via HF Space（免費，~15s/張）
+# ─────────────────────────────────────────────────
+def generate_image_instantid(scene_prompt: str, output_path: str) -> bool:
+    """
+    InstantX/InstantID HF Space（完全免費）
+    - 臉部裁切 → ID 鎖定 Chris 的臉
+    - 全身圖 → pose 參考
+    - prompt → 場景 + Anna 描述
+    """
+    try:
+        from gradio_client import Client, handle_file
+
+        if not _ensure_crops():
+            return False
+
+        full_prompt = STYLE_PREFIX + OUTFIT_ENFORCE + scene_prompt
+
+        print("[InstantID] 連接 HF Space...")
+        c = Client("InstantX/InstantID", verbose=False)
+
+        result = c.predict(
+            face_image_path=handle_file(str(CHRIS_FACE)),   # 鎖定 Chris 臉部 ID
+            pose_image_path=handle_file(str(CHRIS_FRONT)),  # 全身 pose 比例
+            prompt=full_prompt,
+            negative_prompt=(
+                "glasses, eyewear, spectacles, realistic photo, ugly, deformed, "
+                "blurry, bad anatomy, extra limbs, text, watermark, logo, "
+                "3d render, signature"
+            ),
+            style_name="(No style)",
+            num_steps=25,
+            identitynet_strength_ratio=0.85,
+            adapter_strength_ratio=0.80,
+            canny_strength=0.3,
+            depth_strength=0.4,
+            controlnet_selection=["depth"],
+            guidance_scale=5.5,
+            seed=-1,              # 每張隨機
+            scheduler="EulerDiscreteScheduler",
+            enable_lcm=False,
+            enhance_face_region=True,
+            api_name="/generate_image",
+        )
+
+        out_tmp = result[0]
+        shutil.copy(out_tmp, output_path)
+        print(f"[InstantID] 圖片已儲存：{output_path}")
+        return True
+
+    except Exception as e:
+        print(f"[InstantID] 失敗：{e}")
+    return False
+
+
+# ─────────────────────────────────────────────────
+# 方案 B：Novita.ai IP-Adapter（~$0.002/張）
+# ─────────────────────────────────────────────────
 def generate_image_novita(scene_prompt: str, output_path: str) -> bool:
     """Novita.ai SDXL + IP-Adapter（角色一致性，約 $0.002/張）"""
     try:
@@ -40,7 +140,7 @@ def generate_image_novita(scene_prompt: str, output_path: str) -> bool:
 
         ref_b64 = _read_ref_image_b64()
         full_prompt = STYLE_PREFIX + CHAR_DESC + scene_prompt
-        print(f"[Novita] 使用 IP-Adapter 產圖中...")
+        print("[Novita] 使用 IP-Adapter 產圖中...")
 
         payload = {
             "model_name": "sd_xl_base_1.0.safetensors",
@@ -56,8 +156,6 @@ def generate_image_novita(scene_prompt: str, output_path: str) -> bool:
             "seed": -1,
             "clip_skip": 2,
             "guidance_scale": 7.5,
-            "loras": [],
-            "embeddings": [],
             "ip_adapter": [
                 {
                     "model_name": "ip-adapter_sdxl.bin",
@@ -69,10 +167,7 @@ def generate_image_novita(scene_prompt: str, output_path: str) -> bool:
 
         resp = requests.post(
             "https://api.novita.ai/v3/async/txt2img",
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-            },
+            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
             json=payload,
             timeout=30,
         )
@@ -82,7 +177,7 @@ def generate_image_novita(scene_prompt: str, output_path: str) -> bool:
             print(f"[Novita] 無法取得 task_id：{resp.text[:200]}")
             return False
 
-        print(f"[Novita] 任務已提交：{task_id}，等待完成...")
+        print(f"[Novita] 任務已提交：{task_id}")
         return _novita_poll(task_id, output_path, api_key)
 
     except Exception as e:
@@ -91,7 +186,6 @@ def generate_image_novita(scene_prompt: str, output_path: str) -> bool:
 
 
 def _novita_poll(task_id: str, output_path: str, api_key: str, max_wait: int = 120) -> bool:
-    """輪詢 Novita 非同步任務直到完成"""
     import time
     for _ in range(max_wait // 5):
         time.sleep(5)
@@ -114,7 +208,7 @@ def _novita_poll(task_id: str, output_path: str, api_key: str, max_wait: int = 1
                     print(f"[Novita] 圖片已儲存：{output_path}")
                     return True
             elif status in ("TASK_STATUS_FAILED", "TASK_STATUS_TIMEOUT"):
-                print(f"[Novita] 任務失敗：{status} - {data.get('task', {}).get('reason', '')}")
+                print(f"[Novita] 任務失敗：{status}")
                 return False
         except Exception as e:
             print(f"[Novita] 輪詢錯誤：{e}")
@@ -122,17 +216,16 @@ def _novita_poll(task_id: str, output_path: str, api_key: str, max_wait: int = 1
     return False
 
 
-# ─────────────────────────────────────────────
-# 方案 B：fal.ai FLUX.1-Kontext（角色一致，付費）
-# ─────────────────────────────────────────────
+# ─────────────────────────────────────────────────
+# 方案 C：fal.ai FLUX Kontext（付費）
+# ─────────────────────────────────────────────────
 def generate_image_fal(scene_prompt: str, output_path: str) -> bool:
-    """fal.ai FLUX.1-Kontext 生成（角色一致性，付費）"""
     try:
         import fal_client
         os.environ["FAL_KEY"] = os.getenv("FAL_API_KEY", "")
 
         ref_url = fal_client.upload_file(str(REF_IMAGE_PATH))
-        print(f"[fal.ai] 參考圖已上傳，開始生成...")
+        print("[fal.ai] 參考圖已上傳，開始生成...")
 
         result = fal_client.subscribe(
             "fal-ai/flux-pro/kontext",
@@ -159,58 +252,51 @@ def generate_image_fal(scene_prompt: str, output_path: str) -> bool:
     return False
 
 
-# ─────────────────────────────────────────────
-# 方案 C：Segmind Consistent Character（付費，需儲值）
-# ─────────────────────────────────────────────
+# ─────────────────────────────────────────────────
+# 方案 D：Segmind consistent-character（需 credits）
+# ─────────────────────────────────────────────────
 def generate_image_segmind(scene_prompt: str, output_path: str) -> bool:
-    """Segmind consistent-character（需要帳號有 credits）"""
     try:
         api_key = os.getenv("SEGMIND_API_KEY")
         if not api_key:
             return False
 
         ref_b64 = _read_ref_image_b64()
-        full_prompt = STYLE_PREFIX + scene_prompt
-        print(f"[Segmind] consistent-character 產圖中...")
+        print("[Segmind] consistent-character 產圖中...")
 
         resp = requests.post(
             "https://api.segmind.com/v1/consistent-character",
             headers={"x-api-key": api_key, "Content-Type": "application/json"},
             json={
-                "prompt": full_prompt,
+                "prompt": STYLE_PREFIX + scene_prompt,
                 "subject_image": ref_b64,
                 "output_format": "jpg",
                 "output_quality": 90,
-                "negative_prompt": (
-                    "glasses, eyewear, ugly, deformed, blurry, "
-                    "bad anatomy, text, watermark"
-                ),
+                "negative_prompt": "glasses, eyewear, ugly, deformed, blurry, text, watermark",
             },
             timeout=120,
         )
 
-        if resp.status_code == 200 and resp.content[:3] != b'{"':
+        if resp.status_code == 200 and not resp.content.startswith(b'{"'):
             with open(output_path, "wb") as f:
                 f.write(resp.content)
             print(f"[Segmind] 圖片已儲存：{output_path}")
             return True
         else:
-            print(f"[Segmind] 產圖失敗：{resp.status_code} - {resp.text[:200]}")
+            print(f"[Segmind] 失敗：{resp.status_code} - {resp.text[:200]}")
     except Exception as e:
-        print(f"[Segmind] 產圖失敗：{e}")
+        print(f"[Segmind] 失敗：{e}")
     return False
 
 
-# ─────────────────────────────────────────────
-# 方案 D：HuggingFace FLUX.1-schnell（免費，無角色一致性）
-# ─────────────────────────────────────────────
+# ─────────────────────────────────────────────────
+# 方案 E：HuggingFace FLUX.1-schnell（免費，純文字）
+# ─────────────────────────────────────────────────
 def generate_image_huggingface(scene_prompt: str, output_path: str) -> bool:
-    """HuggingFace FLUX.1-schnell（免費，強化 prompt 角色描述）"""
     try:
         api_key = os.getenv("HUGGINGFACE_API_KEY")
-        # 無參考圖時用詳細文字描述補強角色一致性
-        full_prompt = STYLE_PREFIX + CHAR_DESC + scene_prompt
-        print(f"[FLUX] HuggingFace 免費備援產圖中...")
+        full_prompt = STYLE_PREFIX + CHAR_DESC + OUTFIT_ENFORCE + scene_prompt
+        print("[FLUX] HuggingFace 備援產圖中...")
         resp = requests.post(
             "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell",
             headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
@@ -223,36 +309,47 @@ def generate_image_huggingface(scene_prompt: str, output_path: str) -> bool:
         print(f"[FLUX] 圖片已儲存：{output_path}")
         return True
     except Exception as e:
-        print(f"[FLUX] 產圖失敗：{e}")
+        print(f"[FLUX] 失敗：{e}")
     return False
 
 
-# ─────────────────────────────────────────────
+# ─────────────────────────────────────────────────
 # 主入口：依優先順序嘗試各方案
-# ─────────────────────────────────────────────
+# ─────────────────────────────────────────────────
 def generate_image(scene_prompt: str, output_path: str) -> bool:
     """
     優先順序：
-    1. Novita.ai IP-Adapter（角色一致，~$0.002/張）
-    2. fal.ai FLUX Kontext（角色一致，付費）
-    3. Segmind consistent-character（角色一致，需 credits）
-    4. HuggingFace FLUX.1-schnell（免費，無角色一致性）
+    1. InstantID（免費，臉部一致，HF Space）
+    2. Novita.ai IP-Adapter（$0.002/張）
+    3. fal.ai FLUX Kontext（付費）
+    4. Segmind（需 credits）
+    5. HuggingFace FLUX.1-schnell（免費，純文字）
     """
+    # 1. InstantID（免費首選）
+    if REF_IMAGE_PATH.exists():
+        if generate_image_instantid(scene_prompt, output_path):
+            return True
+        print("[Image] InstantID 失敗，嘗試下一方案...")
+
+    # 2. Novita.ai
     if os.getenv("NOVITA_API_KEY"):
         if generate_image_novita(scene_prompt, output_path):
             return True
         print("[Image] Novita 失敗，嘗試下一方案...")
 
+    # 3. fal.ai
     if os.getenv("FAL_API_KEY"):
         if generate_image_fal(scene_prompt, output_path):
             return True
         print("[Image] fal.ai 失敗，嘗試下一方案...")
 
+    # 4. Segmind
     if os.getenv("SEGMIND_API_KEY"):
         if generate_image_segmind(scene_prompt, output_path):
             return True
-        print("[Image] Segmind 失敗，改用免費備援...")
+        print("[Image] Segmind 失敗，改用 HF 備援...")
 
+    # 5. HuggingFace FLUX（最終備援）
     return generate_image_huggingface(scene_prompt, output_path)
 
 
