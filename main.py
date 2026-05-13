@@ -127,7 +127,10 @@ def run():
 
     # Phase 2 — 為每個場景產圖
     print("\n[Phase 2] 生成 5 頁繪本插圖（FLUX.1-schnell）...")
-    image_paths = generate_story_images(scenes, str(output_dir))
+    image_paths = generate_story_images(
+        scenes, str(output_dir),
+        story_title=content.get("story_title", theme)
+    )
 
     if len(image_paths) < 2:
         msg = f"⚠️ 第 {day} 天 — 圖片生成不足（{len(image_paths)}/5），請手動處理"

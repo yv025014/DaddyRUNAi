@@ -20,11 +20,14 @@ REF_IMAGE_PATH = REF_DIR / "人物參考圖.png"
 CHRIS_FACE     = REF_DIR / "chris_face_crop.png"
 CHRIS_FRONT    = REF_DIR / "chris_front.png"
 
-# ── 風格前綴 ──────────────────────────────────────
+# ── 風格前綴（對齊參考圖質感：圖畫書水彩線稿，非遊戲 CG）──
 STYLE_PREFIX = (
-    "Korean manhwa webtoon illustration style, clean flat color, soft shading, "
-    "thin precise outlines, children picture book style, soft pastel palette, "
-    "no text in image, no watermark. "
+    "Warm picture book illustration, Korean webtoon line art style, "
+    "soft watercolor shading, gentle hand-drawn quality, "
+    "warm pastel color palette, simple clean backgrounds, "
+    "soft natural lighting, flat perspective, "
+    "no 3D rendering, no game art, no shiny highlights, no cel shading, "
+    "no text, no watermark, no logo. "
 )
 
 # ── 角色文字描述（純文字備援用）────────────────────
@@ -353,15 +356,27 @@ def generate_image(scene_prompt: str, output_path: str) -> bool:
     return generate_image_huggingface(scene_prompt, output_path)
 
 
-def generate_story_images(scenes: list, output_dir: str) -> list:
-    """為繪本故事的 5 個場景逐一產圖"""
+def generate_story_images(scenes: list, output_dir: str,
+                          story_title: str = "") -> list:
+    """為繪本故事的 5 個場景逐一產圖，並疊加文字"""
+    from services.text_overlay_service import apply_text_overlay
+
     image_paths = []
     for scene in scenes:
-        page = scene["page"]
-        path = f"{output_dir}/page_{page:02d}.jpg"
+        page        = scene["page"]
+        story_text  = scene.get("story_text", "")
+        path        = f"{output_dir}/page_{page:02d}.jpg"
+
         print(f"\n[Image] 產第 {page}/5 頁...")
         if generate_image(scene["image_prompt"], path):
             resize_for_instagram(path)
+            # 疊加文字（圓體排版）
+            apply_text_overlay(
+                image_path=path,
+                story_text=story_text,
+                page=page,
+                title=story_title if page == 1 else None,
+            )
             image_paths.append(path)
         else:
             print(f"[Image] 第 {page} 頁失敗，跳過")

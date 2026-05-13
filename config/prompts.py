@@ -33,61 +33,71 @@ thin precise outlines, children picture book style, soft pastel palette.
 
 def get_story_prompt(day: int, pillar: str, pillar_name: str, theme: str, content_type: str) -> str:
     return f"""
-今天是第 {day} 天，內容支柱：{pillar}（{pillar_name}），主題：{theme}。
+今天是第 {day} 天，主題：{theme}。
 
-請創作一個 5 頁的繪本故事，透過 IG 輪播呈現。
+請以「Chris 把拔」第一人稱視角，創作一個 5 頁的繪本故事。
 
-【故事結構】
-- 第1頁：場景開場 + 諧音梗標題（Hook，前 3 秒要讓人笑出來或點頭）
-- 第2頁：衝突或問題爆發（把拔的崩潰或 Anna 的神邏輯）
-- 第3頁：工程師把拔的「解法」（把技術概念套進去）
-- 第4頁：結果出乎意料 or 溫馨轉折（情感高峰）
-- 第5頁：工程師式金句收尾（讓人想存、想傳）
+━━ 故事寫作規則（不能違反）━━
 
-【諧音梗方向】
-例：「404 把拔 Not Found」「deploy 失敗：今天的晚餐」「Stack overflow：Anna 問了一百個為什麼」
-標題格式可以是：[工程師術語]：[親子情境]
+① 工程師梗只能出現一次，放在第3頁。第1、2、4頁是純粹的日常親子對話，不夾工程師術語。
+② 第2頁必須有 Anna 說的一句話，不超過10個字，且你不可以在後面解釋「這句話為什麼好笑或感人」。
+③ story_text 禁止出現「原來」「竟然」「果然」「真的」這四個字。
+④ caption 的第一句不超過15個字，不能有 emoji，要像你在傳訊息給老朋友。
+⑤ 整篇 caption 最多 3 個 emoji，且不能連續出現。
+⑥ 結尾問句要具體，不能是「你們有類似經驗嗎？」這種萬用句。
 
-【重要提醒】
-- image_prompt 必須是英文，具體描述 Chris 和 Anna 的動作表情與場景
-- Chris 特徵：short dark brown hair, NO glasses, pink t-shirt, khaki shorts, Apple Watch
-- Anna 特徵：brown bob hair with straight bangs, light blue dress with daisy embroidery
-- 圖片中不能有文字
+━━ 故事結構 ━━
+
+第1頁（場景入場）：一個具體的時間地點 + 一個細節。不要解釋，直接畫面感。
+第2頁（Anna 的反應）：Anna 說了什麼或做了什麼，不解釋，讓讀者自己笑。
+第3頁（工程師把拔的內心）：把拔用一個工程師概念理解這個狀況，諧音梗在這裡。
+第4頁（轉折 or 溫馨）：現實的結果，可以是意外溫柔，可以是繼續崩潰。
+第5頁（金句）：一句話，不超過20字，要讓人想截圖傳給朋友。
+
+━━ 圖片 prompt 規則 ━━
+
+- 必須英文
+- 每頁描述 Chris 和 Anna 的具體動作與表情（不能只說「happy」「sad」要說清楚怎麼笑、怎麼皺眉）
+- Chris：short dark brown hair, NO glasses, NO eyewear, pink t-shirt, khaki shorts, Apple Watch
+- Anna：brown bob hair with straight bangs, light blue dress with small daisy pattern, white sandals
+- 結尾固定加：warm picture book illustration style, soft watercolor shading, pastel colors, no text, no watermark
+
+━━ 輸出格式 ━━
 
 以 JSON 格式回覆，不要有其他文字：
 
 {{
-  "story_title": "故事標題，要有諧音梗或工程師梗（10字以內）",
+  "story_title": "標題（諧音梗格式：工程師術語：親子情境，10字以內）",
   "scenes": [
     {{
       "page": 1,
-      "story_text": "第1頁繁體中文（30字以內，要有鉤子讓人想往下滑）",
-      "image_prompt": "English scene description: Chris and Anna in [specific scene], [specific action/expression], Korean manhwa webtoon style, soft pastel colors, no text"
+      "story_text": "第1頁，20字以內，有畫面感，不用形容詞堆砌",
+      "image_prompt": "Specific scene: [exactly what Chris and Anna are doing], [facial expression details], warm picture book illustration style, soft watercolor shading, pastel colors, no text, no watermark"
     }},
     {{
       "page": 2,
-      "story_text": "第2頁（衝突/崩潰，30字以內）",
-      "image_prompt": "English scene prompt for page 2"
+      "story_text": "第2頁，包含Anna說的話（加引號），20字以內",
+      "image_prompt": "Page 2 scene prompt"
     }},
     {{
       "page": 3,
-      "story_text": "第3頁（工程師解法，30字以內）",
-      "image_prompt": "English scene prompt for page 3"
+      "story_text": "第3頁，工程師梗出現，20字以內",
+      "image_prompt": "Page 3 scene prompt"
     }},
     {{
       "page": 4,
-      "story_text": "第4頁（溫馨或爆笑結果，30字以內）",
-      "image_prompt": "English scene prompt for page 4"
+      "story_text": "第4頁，結果或轉折，20字以內",
+      "image_prompt": "Page 4 scene prompt"
     }},
     {{
       "page": 5,
-      "story_text": "第5頁金句（工程師哲學 or 親子溫柔語，30字以內）",
-      "image_prompt": "English scene prompt for page 5, ending scene"
+      "story_text": "第5頁金句，20字以內，讓人想截圖",
+      "image_prompt": "Page 5 ending scene prompt"
     }}
   ],
-  "caption": "IG 貼文文案，100-150字，第一句要夠衝或夠好笑，emoji 適量，結尾問一個讓人想在留言區回答的問題",
+  "caption": "第一句15字以內無emoji像傳訊息給朋友。後面約100字。最多3個emoji不連續。結尾是一個具體的問題。",
   "hashtags": ["工程師把拔", "工程師爸爸", "親子生活", "程式人生", "韓漫風", "繪本"],
-  "ig_story_question": "限時動態互動問題（讓粉絲點選或留言的問題），如不適合則填 null"
+  "ig_story_question": "一個具體的限時動態問題，或填 null"
 }}
 """
 
