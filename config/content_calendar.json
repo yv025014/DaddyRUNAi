@@ -1,54 +1,205 @@
 {
   "account_name": "Chris｜工程師把拔",
   "niche": "全端工程師（.NET / React / MSSQL）＋五歲女兒 Anna 的把拔，台灣在地",
-  "bio": "👨‍💻 全端工程師 | .NET × React × MSSQL\n👧 Anna把拔\n⚡ 用工程師腦袋 debug 人生\n▼ 30天 AI 自動化實驗進行中",
+  "bio": "👨‍💻 全端工程師 | .NET × React × MSSQL\n👧 五歲女兒 Anna 的把拔\n⚡ 用工程師腦袋 debug 人生\n📖 每天一頁親子繪本",
+  "content_format": "5頁韓漫 webtoon 繪本輪播，每頁一個場景，工程師諧音梗貫穿故事",
   "pillars": {
     "A": {
-      "name": "工程師的生活 debug",
-      "description": "用工程師術語比喻日常困境，讓非技術受眾也有共鳴",
-      "image_style": "Studio Ghibli style by Hayao Miyazaki, an engineer dad at his desk with warm glowing screen light, soft watercolor, cozy home atmosphere, no text"
+      "name": "把拔的育兒 Debug",
+      "description": "工程師術語 × 親子日常崩潰時刻，諧音梗讓工程師與家長都秒懂",
+      "image_style": "Korean manhwa webtoon, Chris and Anna in daily parenting situations, warm indoor scenes"
     },
     "B": {
-      "name": "把拔的親子時刻",
-      "description": "溫度感親子內容，女兒背影，台灣在地景點與生活",
-      "image_style": "Studio Ghibli style by Hayao Miyazaki, a father and young daughter in a warm Taiwanese everyday scene, soft watercolor, gentle sunlight, no text"
+      "name": "Anna 與把拔的冒險",
+      "description": "週末出遊、台灣景點、親子互動溫馨時刻，Anna 的神邏輯語錄",
+      "image_style": "Korean manhwa webtoon, outdoor adventure scenes, bright pastel colors, Chris and Anna exploring"
     },
     "C": {
-      "name": "輕技術知識炸彈",
-      "description": "把技術觀念用白話說，讓非工程師也懂，工程師也有共鳴",
-      "image_style": "Studio Ghibli style by Hayao Miyazaki, a whimsical tech concept scene with magical floating code and glowing diagrams, soft watercolor, dreamy atmosphere, no text"
+      "name": "工程師白話課",
+      "description": "把技術概念用超白話比喻解釋，讓非工程師也懂，工程師也覺得好笑",
+      "image_style": "Korean manhwa webtoon, simple concept illustrations, clean backgrounds, Chris explaining to Anna"
     }
   },
   "schedule": [
-    {"day": 1,  "type": "reels", "pillar": "A", "theme": "工程師把拔的30天AI實驗開始了"},
-    {"day": 2,  "type": "story", "pillar": "A", "theme": "互動：你猜工程師帶小孩最頭痛的是？"},
-    {"day": 3,  "type": "reels", "pillar": "C", "theme": "什麼是 API？用便當解釋給爸媽聽"},
-    {"day": 4,  "type": "story", "pillar": "B", "theme": "今日女兒語錄"},
-    {"day": 5,  "type": "photo", "pillar": "A", "theme": "工程師的工作區長這樣"},
-    {"day": 6,  "type": "reels", "pillar": "B", "theme": "週末帶五歲女兒去的台灣景點"},
-    {"day": 7,  "type": "story", "pillar": "C", "theme": "投票：你知道前端和後端的差別嗎？"},
-    {"day": 8,  "type": "reels", "pillar": "A", "theme": "我把育兒時間排成 sprint"},
-    {"day": 9,  "type": "story", "pillar": "A", "theme": "互動問答：你的人生最大 bug 是什麼？"},
-    {"day": 10, "type": "reels", "pillar": "C", "theme": "後端工程師的一天長這樣"},
-    {"day": 11, "type": "photo", "pillar": "B", "theme": "和女兒一起的週末早晨"},
-    {"day": 12, "type": "reels", "pillar": "A", "theme": "育兒就是維護 legacy code"},
-    {"day": 13, "type": "story", "pillar": "C", "theme": "小測驗：HTTP 是什麼？"},
-    {"day": 14, "type": "reels", "pillar": "B", "theme": "工程師把拔的親子食譜"},
-    {"day": 15, "type": "photo", "pillar": "A", "theme": "下班後的工程師模式"},
-    {"day": 16, "type": "reels", "pillar": "C", "theme": "為什麼我選 React 不選 Vue"},
-    {"day": 17, "type": "story", "pillar": "B", "theme": "女兒問了我一個答不出的問題"},
-    {"day": 18, "type": "reels", "pillar": "A", "theme": "工程師買東西前會做什麼"},
-    {"day": 19, "type": "photo", "pillar": "C", "theme": "我的開發工具組合 2025"},
-    {"day": 20, "type": "reels", "pillar": "B", "theme": "台灣工程師把拔的週末行程"},
-    {"day": 21, "type": "story", "pillar": "A", "theme": "這30天實驗中期回顧投票"},
-    {"day": 22, "type": "reels", "pillar": "C", "theme": "什麼是資料庫？用圖書館解釋"},
-    {"day": 23, "type": "photo", "pillar": "A", "theme": "工程師的 side project：帶娃"},
-    {"day": 24, "type": "reels", "pillar": "B", "theme": "帶女兒學程式的第一步"},
-    {"day": 25, "type": "story", "pillar": "C", "theme": "互動：你最想學的技術是什麼？"},
-    {"day": 26, "type": "reels", "pillar": "A", "theme": "工程師式的親子溝通技巧"},
-    {"day": 27, "type": "photo", "pillar": "B", "theme": "女兒的第一個程式（畫圖）"},
-    {"day": 28, "type": "reels", "pillar": "C", "theme": ".NET vs Node.js 我的真實感受"},
-    {"day": 29, "type": "story", "pillar": "A", "theme": "實驗倒數！你有追到嗎？"},
-    {"day": 30, "type": "reels", "pillar": "A", "theme": "30天工程師把拔AI實驗大結局"}
+    {
+      "day": 1,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "404 把拔 Not Found：帶 Anna 去全聯，把拔在零食區消失了"
+    },
+    {
+      "day": 2,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "無限迴圈：幫 Anna 穿鞋穿了八次的星期一早晨"
+    },
+    {
+      "day": 3,
+      "type": "carousel",
+      "pillar": "C",
+      "theme": "什麼是 API？把拔用便當店解釋給 Anna 聽"
+    },
+    {
+      "day": 4,
+      "type": "carousel",
+      "pillar": "B",
+      "theme": "Stack Overflow：Anna 問了一百個為什麼的週末下午"
+    },
+    {
+      "day": 5,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "Deploy 失敗：把拔第一次煮咖哩，成品不如預期"
+    },
+    {
+      "day": 6,
+      "type": "carousel",
+      "pillar": "B",
+      "theme": "Git merge conflict：把拔和阿嬤都想哄 Anna 睡，發生衝突了"
+    },
+    {
+      "day": 7,
+      "type": "carousel",
+      "pillar": "C",
+      "theme": "什麼是資料庫？把拔用玩具箱解釋給 Anna 聽"
+    },
+    {
+      "day": 8,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "Debug Mode：Anna 的水壺怎麼都找不到，把拔開始系統性搜索"
+    },
+    {
+      "day": 9,
+      "type": "carousel",
+      "pillar": "B",
+      "theme": "版本更新 v5.0：Anna 上幼稚園第一天"
+    },
+    {
+      "day": 10,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "API Timeout：等 Anna 刷牙等了二十分鐘的晚上"
+    },
+    {
+      "day": 11,
+      "type": "carousel",
+      "pillar": "C",
+      "theme": "什麼是前端後端？把拔用餐廳解釋，Anna 說她要當主廚"
+    },
+    {
+      "day": 12,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "403 Forbidden：Anna 闖進把拔書房偷玩電腦的下午"
+    },
+    {
+      "day": 13,
+      "type": "carousel",
+      "pillar": "B",
+      "theme": "Cache 清除：帶 Anna 去剪頭髮，她說要剪成公主"
+    },
+    {
+      "day": 14,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "Exception Handling：Anna 在賣場突然大哭，把拔的緊急處置"
+    },
+    {
+      "day": 15,
+      "type": "carousel",
+      "pillar": "C",
+      "theme": "什麼是 Bug？把拔用積木蓋的城堡倒了來解釋"
+    },
+    {
+      "day": 16,
+      "type": "carousel",
+      "pillar": "B",
+      "theme": "Dark Mode：哄 Anna 睡覺時，把拔自己先睡著了"
+    },
+    {
+      "day": 17,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "Memory Leak：把拔忘了幾件事，Anna 的記憶體卻超清楚"
+    },
+    {
+      "day": 18,
+      "type": "carousel",
+      "pillar": "B",
+      "theme": "週末 Sprint：帶 Anna 去動物園的二日衝刺計畫"
+    },
+    {
+      "day": 19,
+      "type": "carousel",
+      "pillar": "C",
+      "theme": "什麼是 Git？把拔用橡皮擦解釋「可以反悔」的神奇功能"
+    },
+    {
+      "day": 20,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "Code Review：Anna 幫把拔「改」了工作報告，改得很有道理"
+    },
+    {
+      "day": 21,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "Hotfix：Anna 膝蓋破皮，把拔的緊急 patch"
+    },
+    {
+      "day": 22,
+      "type": "carousel",
+      "pillar": "B",
+      "theme": "開源精神：教 Anna 第一次把玩具借給同學"
+    },
+    {
+      "day": 23,
+      "type": "carousel",
+      "pillar": "C",
+      "theme": "什麼是 AI？把拔用「很聰明的貓咪」解釋，Anna 說要養一隻"
+    },
+    {
+      "day": 24,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "Callback 地獄：Anna 說「等一下」就不見了"
+    },
+    {
+      "day": 25,
+      "type": "carousel",
+      "pillar": "B",
+      "theme": "Load Balancing：把拔同時在 WFH 上班和陪 Anna 畫圖"
+    },
+    {
+      "day": 26,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "技術債到期：把拔欠 Anna 的五個承諾都在今天被追討"
+    },
+    {
+      "day": 27,
+      "type": "carousel",
+      "pillar": "C",
+      "theme": "什麼是 for 迴圈？把拔用「再說一次睡前故事」來解釋"
+    },
+    {
+      "day": 28,
+      "type": "carousel",
+      "pillar": "B",
+      "theme": "Pull Request：Anna 第一次主動說對不起，把拔 approved"
+    },
+    {
+      "day": 29,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "Single Point of Failure：把拔生病了，家裡系統全面崩潰"
+    },
+    {
+      "day": 30,
+      "type": "carousel",
+      "pillar": "A",
+      "theme": "Production 上線：30 天工程師把拔的繪本日記大結局"
+    }
   ]
 }
