@@ -11,7 +11,7 @@ def _get_credentials():
 
 
 def create_media_container(image_url: str, caption: str) -> str | None:
-    """建立 IG media container，回傳 container_id"""
+    """建立單張 IG media container，回傳 container_id"""
     user_id, token = _get_credentials()
     url = f"{BASE_URL}/{user_id}/media"
     payload = {
@@ -29,6 +29,73 @@ def create_media_container(image_url: str, caption: str) -> str | None:
     else:
         print(f"[IG] Container 建立失敗：{data}")
         return None
+
+
+def create_carousel_item(image_url: str) -> str | None:
+    """建立輪播子項目 container（is_carousel_item=true）"""
+    user_id, token = _get_credentials()
+    url = f"{BASE_URL}/{user_id}/media"
+    payload = {
+        "image_url": image_url,
+        "is_carousel_item": "true",
+        "access_token": token,
+    }
+    resp = requests.post(url, data=payload, timeout=30)
+    data = resp.json()
+    if "id" in data:
+        print(f"[IG] 輪播子項目建立：{data['id']}")
+        return data["id"]
+    else:
+        print(f"[IG] 輪播子項目失敗：{data}")
+        return None
+
+
+def create_carousel_container(children_ids: list, caption: str) -> str | None:
+    """建立輪播主 container"""
+    user_id, token = _get_credentials()
+    url = f"{BASE_URL}/{user_id}/media"
+    payload = {
+        "media_type": "CAROUSEL",
+        "children": ",".join(children_ids),
+        "caption": caption,
+        "access_token": token,
+    }
+    resp = requests.post(url, data=payload, timeout=30)
+    data = resp.json()
+    if "id" in data:
+        print(f"[IG] 輪播 Container 建立成功：{data['id']}")
+        return data["id"]
+    else:
+        print(f"[IG] 輪播 Container 失敗：{data}")
+        return None
+
+
+def post_carousel_to_instagram(image_urls: list, caption: str) -> str | None:
+    """發布輪播貼文：建立子項目 → 建立輪播容器 → 等待 → 發布"""
+    # 1. 建立每張圖的子項目
+    children_ids = []
+    for i, url in enumerate(image_urls):
+        print(f"[IG] 上傳第 {i+1}/{len(image_urls)} 張...")
+        cid = create_carousel_item(url)
+        if cid:
+            children_ids.append(cid)
+        time.sleep(1)
+
+    if len(children_ids) < 2:
+        print(f"[IG] 子項目不足（{len(children_ids)}），無法建立輪播")
+        return None
+
+    # 2. 建立輪播容器
+    container_id = create_carousel_container(children_ids, caption)
+    if not container_id:
+        return None
+
+    # 3. 等待處理
+    if not wait_for_container(container_id):
+        return None
+
+    # 4. 發布
+    return publish_media(container_id)
 
 
 def wait_for_container(container_id: str, max_wait: int = 60) -> bool:

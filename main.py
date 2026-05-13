@@ -1,7 +1,7 @@
 """
-IG Autopilot — 每日主腳本
+IG Autopilot — 每日主腳本（繪本輪播版）
 執行方式：python main.py
-Cron：0 8 * * * /usr/bin/python3 /Users/chris/Desktop/AI_IG_RUN/main.py
+Cron：0 8 * * * cd /Users/chris/Desktop/AI_IG_RUN && ./venv/bin/python main.py >> logs/main.log 2>&1
 """
 
 import os
@@ -13,9 +13,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from services.claude_service import generate_content
-from services.image_service import generate_image, resize_for_instagram
+from services.image_service import generate_story_images
 from services.cloud_service import upload_image
-from services.ig_service import post_to_instagram
+from services.ig_service import post_carousel_to_instagram
 from services.notify_service import send_telegram
 
 BASE_DIR = Path(__file__).parent
@@ -43,36 +43,36 @@ def save_log(log: list):
 
 
 def get_today_schedule(calendar: dict) -> dict | None:
-    """根據已發布天數決定今天要發第幾天的內容"""
     log = load_log()
     published_days = {entry["day"] for entry in log if entry.get("status") == "published"}
-    schedule = calendar["schedule"]
-
-    for item in schedule:
+    for item in calendar["schedule"]:
         if item["day"] not in published_days:
             return item
-    return None  # 30 天全部完成
+    return None
 
 
 def format_caption(content: dict) -> str:
-    """組合文案 + 標籤"""
     tags = " ".join([f"#{t.lstrip('#')}" for t in content.get("hashtags", [])])
     return f"{content['caption']}\n\n{tags}"
 
 
 def save_brief(output_dir: Path, day: int, schedule_item: dict, content: dict):
-    """儲存今日簡報 markdown"""
     brief_path = output_dir / "today_brief.md"
+    scenes_text = "\n\n".join([
+        f"**第{s['page']}頁**\n{s['story_text']}\n\n*Prompt: {s['image_prompt']}*"
+        for s in content.get("scenes", [])
+    ])
     lines = [
-        f"# 今日發文簡報 — 第 {day} 天",
+        f"# 今日繪本簡報 — 第 {day} 天",
         f"",
         f"**日期**：{datetime.date.today()}",
+        f"**故事標題**：{content.get('story_title', '')}",
         f"**支柱**：{schedule_item['pillar']} — {schedule_item.get('theme', '')}",
-        f"**格式**：{schedule_item['type']}",
+        f"**格式**：輪播5張繪本",
         f"",
-        f"## 腳本",
+        f"## 故事場景",
         f"",
-        content.get("script", ""),
+        scenes_text,
         f"",
         f"## 貼文文案",
         f"",
@@ -81,10 +81,6 @@ def save_brief(output_dir: Path, day: int, schedule_item: dict, content: dict):
         f"## 標籤",
         f"",
         " ".join([f"#{t}" for t in content.get("hashtags", [])]),
-        f"",
-        f"## 圖片 Prompt",
-        f"",
-        content.get("image_prompt", ""),
     ]
     brief_path.write_text("\n".join(lines), encoding="utf-8")
     print(f"[Main] 簡報已儲存：{brief_path}")
@@ -92,7 +88,7 @@ def save_brief(output_dir: Path, day: int, schedule_item: dict, content: dict):
 
 def run():
     print("=" * 50)
-    print(f"[Main] IG Autopilot 啟動 — {datetime.datetime.now()}")
+    print(f"[Main] IG Autopilot 繪本版啟動 — {datetime.datetime.now()}")
     print("=" * 50)
 
     calendar = load_calendar()
@@ -116,62 +112,85 @@ def run():
     output_dir = OUTPUT_BASE / today_str
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    print("\n[Phase 1] 呼叫 Claude 生成文案...")
+    # Phase 1 — 生成繪本故事腳本
+    print("\n[Phase 1] 呼叫 Gemini 2.5 Pro 生成繪本故事...")
     content = generate_content(day, pillar, pillar_info["name"], theme, content_type)
     save_brief(output_dir, day, today_item, content)
 
-    print("\n[Phase 2] 生成封面圖片...")
-    image_path = str(output_dir / "cover.jpg")
-    img_prompt = content.get("image_prompt", pillar_info["image_style"])
-    success = generate_image(img_prompt, image_path)
+    scenes = content.get("scenes", [])
+    if not scenes:
+        msg = f"⚠️ 第 {day} 天 — 故事場景生成失敗"
+        send_telegram(msg)
+        return
 
-    if not success:
-        msg = f"⚠️ 第 {day} 天 — 圖片生成失敗，請手動處理"
+    print(f"[Main] 故事標題：{content.get('story_title')}，共 {len(scenes)} 個場景")
+
+    # Phase 2 — 為每個場景產圖
+    print("\n[Phase 2] 生成 5 頁繪本插圖（FLUX.1-schnell）...")
+    image_paths = generate_story_images(scenes, str(output_dir))
+
+    if len(image_paths) < 2:
+        msg = f"⚠️ 第 {day} 天 — 圖片生成不足（{len(image_paths)}/5），請手動處理"
         print(f"[Main] {msg}")
         send_telegram(msg)
         return
 
-    resize_for_instagram(image_path)
+    # Phase 3 — 上傳所有圖片至 Cloudinary
+    print(f"\n[Phase 3] 上傳 {len(image_paths)} 張圖片至 Cloudinary...")
+    image_urls = []
+    for i, path in enumerate(image_paths):
+        public_id = f"ig_autopilot/day_{day:02d}_{today_str}_p{i+1}"
+        url = upload_image(path, public_id)
+        if url:
+            image_urls.append(url)
 
-    print("\n[Phase 3] 上傳圖片至 Cloudinary...")
-    public_id = f"ig_autopilot/day_{day:02d}_{today_str}"
-    image_url = upload_image(image_path, public_id)
+    if len(image_urls) < 2:
+        msg = f"⚠️ 第 {day} 天 — 圖片上傳失敗"
+        send_telegram(msg)
+        return
 
-    package_path = output_dir / "post_package.json"
+    # 儲存發文包
+    caption = format_caption(content)
     package = {
         "day": day,
         "date": today_str,
         "pillar": pillar,
         "theme": theme,
-        "content_type": content_type,
-        "content": content,
-        "image_url": image_url,
-        "caption": format_caption(content),
+        "story_title": content.get("story_title"),
+        "content_type": "carousel",
+        "scenes": scenes,
+        "image_urls": image_urls,
+        "caption": caption,
     }
-    package_path.write_text(json.dumps(package, ensure_ascii=False, indent=2), encoding="utf-8")
+    (output_dir / "post_package.json").write_text(
+        json.dumps(package, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
-    print("\n[Phase 4] 發布至 Instagram...")
-    caption = format_caption(content)
-    media_id = post_to_instagram(image_url, caption)
+    # Phase 4 — 發布輪播至 IG
+    print(f"\n[Phase 4] 發布 {len(image_urls)} 張輪播至 Instagram...")
+    media_id = post_carousel_to_instagram(image_urls, caption)
 
+    # 記錄 log
     log = load_log()
-    log_entry = {
+    log.append({
         "day": day,
         "date": today_str,
         "theme": theme,
+        "story_title": content.get("story_title"),
         "media_id": media_id,
-        "image_url": image_url,
+        "image_count": len(image_urls),
         "status": "published" if media_id else "failed",
-    }
-    log.append(log_entry)
+    })
     save_log(log)
 
+    # 通知
     if media_id:
         msg = (
-            f"✅ *第 {day} 天發布成功！*\n"
+            f"✅ *第 {day} 天繪本發布成功！*\n"
+            f"📖 {content.get('story_title')}\n"
+            f"🖼 {len(image_urls)} 張輪播\n"
             f"主題：{theme}\n"
-            f"Media ID：`{media_id}`\n"
-            f"明早 09:00 會收到昨日數據報告 📊"
+            f"Media ID：`{media_id}`"
         )
     else:
         msg = f"❌ 第 {day} 天發布失敗，請檢查 log"
