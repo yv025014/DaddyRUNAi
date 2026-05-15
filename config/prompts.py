@@ -4,67 +4,115 @@ SYSTEM_PROMPT = """
 核心人設：用工程師腦袋 debug 人生，真實、有溫度、輕技術。
 目標受眾：台灣工程師、科技業父母、想了解程式的一般人。
 語言：繁體中文，口語化，避免過度正式。
-稱謂規則：自稱「把拔」不用「爸爸」，女兒叫「Anna」，帳號名稱是「工程師把拔」。
+
+角色設定：
+- 把拔（Chris）：全端工程師，喜歡用工程師術語解釋一切，常常被家人看穿
+- 媽咪：務實、溫暖，偶爾也會補刀把拔，是家裡的定海神針
+- Anna：五歲，看起來比把拔還懂事，語出驚人，是全家的笑點來源
+
+稱謂規則：
+- 把拔自稱「把拔」不用「爸爸」
+- 女兒叫「Anna」
+- 帳號名稱是「工程師把拔」
+- 媽咪可以叫「媽咪」或讓 Anna 叫「媽」
+
 內容形式：每篇貼文是一個5頁的繪本故事，透過 IG 輪播呈現。
+媽咪可以出現在故事裡，增加家庭感與真實感，但把拔和 Anna 是主角。
 """
 
 # 固定人設描述，每張圖都帶這段確保一致性
+# 風格參考：半寫實現代漫畫風，乾淨線條，飽和色彩，台灣在地感
 CHARACTER_BASE = (
-    "Studio Ghibli-inspired illustration, detailed hand-drawn style, warm and vivid colors, "
-    "Asian engineer dad Chris: early 30s, short brown hair, warm smile, pink casual t-shirt, shorts, Apple Watch on wrist. "
-    "5-year-old Asian girl Anna: brown bob hair with bangs, big round eyes, cute expression, "
-    "light blue dress with Totoro print, pink Crocs sandals. "
-    "Soot sprites (susuwatari) hidden in background corners. "
-    "No text in image, no watermark."
+    "Semi-realistic modern manga illustration style, detailed clean line art, "
+    "vibrant saturated colors, cel-shading with soft highlights, "
+    "realistic body proportions, high detail on clothing and accessories, "
+    "authentic Taiwan daily life settings. "
+    "Dad Chris (把拔): tall lean Asian man, early 30s, short straight black hair, "
+    "dark navy baseball cap, white graphic t-shirt, light blue jeans, "
+    "black backpack, digital watch on left wrist, warm confident smile, "
+    "clean-cut appearance. "
+    "Mom (媽咪): Asian woman, early 30s, medium-length straight black hair, "
+    "blue logo baseball cap, navy blue t-shirt, white pearl bracelet, "
+    "small chain shoulder bag, bright cheerful smile, big expressive eyes. "
+    "Daughter Anna: 5-6 year old Asian girl, straight black hair with blunt bangs, "
+    "shoulder-length hair, very big bright eyes that curve into crescents when smiling, "
+    "colorful casual clothes, small sneakers, full of energy and confidence. "
+    "No text in image, no watermark, no speech bubbles."
 )
 
 
-def get_story_prompt(day: int, pillar: str, pillar_name: str, theme: str, content_type: str) -> str:
+def get_story_prompt(day: int, pillar: str, pillar_name: str, theme: str,
+                     content_type: str, script_hint: str = "") -> str:
+    hint_section = f"\n腳本大綱提示（請依此發展，但可以自由發揮細節）：\n{script_hint}\n" if script_hint else ""
     return f"""
-今天是第 {day} 天，內容支柱：{pillar}（{pillar_name}），主題：{theme}，格式：{content_type}。
+今天是第 {day} 天，內容支柱：{pillar}（{pillar_name}），主題：{theme}。
+{hint_section}
+請創作一個5頁的繪本故事，透過 IG 輪播呈現。
 
-請創作一個5頁的繪本故事，透過 IG 輪播呈現。故事結構：
-- 第1頁：場景開場（Hook，吸引停留滑下去）
-- 第2頁：衝突或問題（引發讀者共鳴）
-- 第3頁：過程或轉折（展現工程師把拔視角）
-- 第4頁：解決或溫馨時刻（情感高峰）
-- 第5頁：金句收尾（引發留言或分享）
+角色：
+- Chris 把拔：工程師，遇到問題喜歡過度分析，常被家人看穿
+- Anna：五歲女兒，邏輯直接犀利，一句話讓把拔啞口無言
+- 媽咪：務實溫暖，善於在對話最後補刀收尾
+
+故事公式：
+- 第1頁：把拔遇到狀況（Hook，讓人想滑下去）
+- 第2頁：把拔用工程師思維解釋或應對
+- 第3頁：Anna 一句話直接拆穿
+- 第4頁：媽咪補刀 or Anna 繼續追問
+- 第5頁：把拔心得（自嘲金句，引發留言）
 
 以 JSON 格式回覆，不要有其他文字：
 
 {{
-  "story_title": "這個繪本故事的標題（8字以內）",
+  "story_title": "故事標題（8字以內，有吸引力）",
+  "quote": "第5頁的金句，單獨放在深色背景頁，20字以內，有哲學感或自嘲感",
   "scenes": [
     {{
       "page": 1,
-      "story_text": "這一頁的故事文字（繁體中文，30字以內，適合放在圖片下方或旁邊）",
-      "image_prompt": "英文圖片生成 prompt，描述這一頁的場景畫面，具體描述 Chris 和 Anna 的動作表情與環境，不含文字"
+      "speaker": "chris",
+      "mood": "normal",
+      "story_text": "這一頁的對話或獨白（繁體中文，40字以內）",
+      "background": "dining_room"
     }},
     {{
       "page": 2,
-      "story_text": "第2頁故事文字",
-      "image_prompt": "第2頁英文圖片 prompt"
+      "speaker": "chris",
+      "mood": "proud",
+      "story_text": "第2頁文字",
+      "background": "dining_room"
     }},
     {{
       "page": 3,
-      "story_text": "第3頁故事文字",
-      "image_prompt": "第3頁英文圖片 prompt"
+      "speaker": "anna",
+      "mood": "smirk",
+      "story_text": "第3頁文字",
+      "background": "dining_room"
     }},
     {{
       "page": 4,
-      "story_text": "第4頁故事文字",
-      "image_prompt": "第4頁英文圖片 prompt"
+      "speaker": "mom",
+      "mood": "facepalm",
+      "story_text": "第4頁文字",
+      "background": "dining_room"
     }},
     {{
       "page": 5,
-      "story_text": "第5頁金句（工程師哲學或親子溫馨語）",
-      "image_prompt": "第5頁英文圖片 prompt，收尾畫面"
+      "speaker": "chris",
+      "mood": "defeated",
+      "story_text": "第5頁金句（把拔自嘲收尾）",
+      "background": "dining_room"
     }}
   ],
-  "caption": "IG 貼文文案，約 100-150 字，包含 emoji，口語化繁體中文，開頭要有吸引人停留的第一句話，結尾留一個引發留言的問題",
-  "hashtags": ["標籤1", "標籤2", "標籤3", "標籤4", "標籤5", "標籤6"],
-  "story_text": "限時動態的互動問題或內容，否則填 null"
+  "caption": "IG 貼文文案，約 100-150 字，包含 emoji，口語化繁體中文，開頭第一句要讓人停住，結尾留一個引發留言的問題",
+  "hashtags": ["工程師把拔", "工程師日常", "親子日常", "台灣工程師", "科技爸爸", "Anna語錄"]
 }}
+
+speaker 只能是 "chris" | "anna" | "mom"
+mood 只能是：
+  chris: normal | proud | defeated | surprised | thinking | confused | embarrassed
+  anna:  happy | smirk | pointing | proud | curious
+  mom:   smiling | facepalm | proud | deadpan | skeptical
+background 只能是：dining_room | living_room | office_desk | bedroom | outdoor_park
 """
 
 

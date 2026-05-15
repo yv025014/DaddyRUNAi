@@ -12,16 +12,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from services.claude_service import generate_content
-from services.image_service import generate_story_images
+from services.llm_service import generate_content
+from services.composite_service import render_carousel
 from services.cloud_service import upload_image
 from services.ig_service import post_carousel_to_instagram
 from services.notify_service import send_telegram
 
 BASE_DIR = Path(__file__).parent
+PROJECT_DIR = Path("/Users/chris/Desktop/AI_IG_RUN")
 CALENDAR_PATH = BASE_DIR / "config" / "content_calendar.json"
-LOG_PATH = BASE_DIR / "data" / "publish_log.json"
-OUTPUT_BASE = BASE_DIR / "output"
+LOG_PATH = PROJECT_DIR / "data" / "publish_log.json"
+OUTPUT_BASE = PROJECT_DIR / "output"
 
 
 def load_calendar() -> dict:
@@ -59,7 +60,7 @@ def format_caption(content: dict) -> str:
 def save_brief(output_dir: Path, day: int, schedule_item: dict, content: dict):
     brief_path = output_dir / "today_brief.md"
     scenes_text = "\n\n".join([
-        f"**第{s['page']}頁**\n{s['story_text']}\n\n*Prompt: {s['image_prompt']}*"
+        f"**第{s['page']}頁** [{s.get('speaker','')} / {s.get('mood','')}]\n{s['story_text']}"
         for s in content.get("scenes", [])
     ])
     lines = [
@@ -105,6 +106,7 @@ def run():
     pillar_info = calendar["pillars"][pillar]
     theme = today_item["theme"]
     content_type = today_item["type"]
+    script_hint = today_item.get("script_hint", "")
 
     print(f"[Main] 今日任務：第 {day} 天 | 支柱 {pillar} | {theme}")
 
@@ -113,8 +115,8 @@ def run():
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Phase 1 — 生成繪本故事腳本
-    print("\n[Phase 1] 呼叫 Gemini 2.5 Pro 生成繪本故事...")
-    content = generate_content(day, pillar, pillar_info["name"], theme, content_type)
+    print("\n[Phase 1] 呼叫 Gemini 生成繪本故事...")
+    content = generate_content(day, pillar, pillar_info["name"], theme, content_type, script_hint)
     save_brief(output_dir, day, today_item, content)
 
     scenes = content.get("scenes", [])
@@ -125,12 +127,13 @@ def run():
 
     print(f"[Main] 故事標題：{content.get('story_title')}，共 {len(scenes)} 個場景")
 
-    # Phase 2 — 為每個場景產圖
-    print("\n[Phase 2] 生成 5 頁繪本插圖（FLUX.1-schnell）...")
-    image_paths = generate_story_images(scenes, str(output_dir))
+    # Phase 2 — 合成輪播圖（角色立繪 + 背景 + 文字）
+    print("\n[Phase 2] 合成輪播圖（角色立繪 + 背景 + 文字）...")
+    content["cover_background"] = today_item.get("cover_background", "dining_room")
+    image_paths = render_carousel(content, str(output_dir))
 
     if len(image_paths) < 2:
-        msg = f"⚠️ 第 {day} 天 — 圖片生成不足（{len(image_paths)}/5），請手動處理"
+        msg = f"⚠️ 第 {day} 天 — 輪播合成失敗（{len(image_paths)} 頁），請手動處理"
         print(f"[Main] {msg}")
         send_telegram(msg)
         return
