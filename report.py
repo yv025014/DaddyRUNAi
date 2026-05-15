@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from services.ig_service import get_recent_posts, get_post_insights
-from services.claude_service import generate_report
+from services.llm_service import generate_report
 from services.notify_service import send_telegram
 
 BASE_DIR = Path(__file__).parent

@@ -18,10 +18,11 @@ def _clean_json(raw: str) -> str:
     return raw.strip().rstrip("```").strip()
 
 
-def generate_content(day: int, pillar: str, pillar_name: str, theme: str, content_type: str) -> dict:
-    """使用 Gemini 2.5 Pro 生成今日繪本故事內容"""
+def generate_content(day: int, pillar: str, pillar_name: str, theme: str,
+                     content_type: str, script_hint: str = "") -> dict:
+    """使用 Gemini 2.5 Flash 生成今日繪本故事內容"""
     client = _client()
-    prompt = get_story_prompt(day, pillar, pillar_name, theme, content_type)
+    prompt = get_story_prompt(day, pillar, pillar_name, theme, content_type, script_hint)
 
     # 優先用 2.5 Pro（品質最好），失敗則降級用 Flash
     for model in ["gemini-2.5-flash", "gemini-flash-latest"]:
