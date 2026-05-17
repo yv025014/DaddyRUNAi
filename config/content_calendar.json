@@ -7,19 +7,31 @@
       "name": "技術白話",
       "description": "複雜技術講到人聽得懂。把拔認真解釋 → Anna 用小孩邏輯秒懂 → 媽咪一句話認證收尾。負責收藏與轉發。",
       "formula": "Chris認真解釋 → Anna一句話秒懂 → 媽咪認證",
-      "backgrounds": ["dining_room", "office_desk", "living_room"]
+      "backgrounds": [
+        "dining_room",
+        "office_desk",
+        "living_room"
+      ]
     },
     "workplace": {
       "name": "IT職場奇聞",
       "description": "User的神奇需求讓工程師崩潰。User提奇怪需求 → Chris試圖理解 → Anna一句話拆穿真相。負責留言與共鳴。",
       "formula": "User提奇怪需求 → Chris困惑試圖理解 → Anna一句話講出真相",
-      "backgrounds": ["office_desk", "living_room", "dining_room"]
+      "backgrounds": [
+        "office_desk",
+        "living_room",
+        "dining_room"
+      ]
     },
     "office": {
       "name": "大人腹黑學",
       "description": "公司最荒謬的真相。荒謬職場場景 → Chris是當事人 → 媽咪冷靜一句補刀。負責破圈轉發，非工程師也懂。",
       "formula": "荒謬職場場景 → Chris是當事人或旁觀者 → 媽咪一句話補刀",
-      "backgrounds": ["dining_room", "living_room", "bedroom"]
+      "backgrounds": [
+        "dining_room",
+        "living_room",
+        "bedroom"
+      ]
     }
   },
   "schedule": [
@@ -155,7 +167,7 @@
       "day": 17,
       "type": "carousel",
       "pillar": "workplace",
-      "theme": "User：可以做一個像Google的搜尋嗎？我們有10筆資料",
+      "theme": "User：我們可以做一個像ChatGPT的對話功能嗎？我們只有10筆FAQ",
       "cover_background": "office_desk",
       "script_hint": "User：搜尋功能可以做成像Google那樣智慧型的嗎？→ 把拔：你們有多少資料？→ User：現在10筆，未來可能到30筆 → Anna：把拔，我書架有10本書，我需要Google搜尋嗎？→ 把拔：用眼睛掃過去就好 → Anna：那User呢？→ 把拔沉默"
     },
@@ -163,7 +175,7 @@
       "day": 18,
       "type": "carousel",
       "pillar": "office",
-      "theme": "最閒的人整理簡報，最後變成專案成果代表",
+      "theme": "功勞都是主管的？專案成果發表，我連說話的機會都沒有",
       "cover_background": "living_room",
       "script_hint": "把拔做了三個月的系統順利上線 → 成果發表會由PM整理簡報報告 → 把拔在台下聽 → 回家告訴媽媽 → 媽媽：所以你做系統，他做簡報，然後他去報告？→ 把拔：對 → 媽媽：那老闆認識你嗎？→ 把拔：……認識PM → 媽媽：我懂了"
     },
@@ -171,7 +183,7 @@
       "day": 19,
       "type": "carousel",
       "pillar": "tech",
-      "theme": "網路封包是什麼？Anna：就是寄信要寫地址",
+      "theme": "什麼是網路封包？Anna：就是把餅乾碎片打包寄給外婆",
       "cover_background": "office_desk",
       "script_hint": "把拔解釋網路封包與TCP/IP → Anna：就是寄信要寫地址、拆成幾封、對方再拼起來？→ 把拔：完全正確！→ Anna：那如果信寄丟了呢？→ 把拔：TCP會確認，沒收到就重寄 → Anna：所以網路是負責任的郵差？→ 媽媽：比把拔回訊息還負責"
     },
@@ -179,7 +191,7 @@
       "day": 20,
       "type": "carousel",
       "pillar": "workplace",
-      "theme": "User：我不知道我要什麼，但做出來我就知道對不對",
+      "theme": "User：給我一個驚喜！但如果不是我要的，就是你們沒搞懂",
       "cover_background": "office_desk",
       "script_hint": "User：需求我說不清楚，你先做，做出來我看對不對 → 把拔OS：這不是開發，這是猜謎 → Anna：把拔，如果我說很想吃東西但不知道要吃什麼，你先去廚房準備著。合理嗎？→ 把拔：不合理，請先想清楚 → Anna：那User呢？→ 把拔：……他是客戶"
     },
@@ -187,7 +199,7 @@
       "day": 21,
       "type": "carousel",
       "pillar": "office",
-      "theme": "30天中期回顧：一群不懂AI的人，決定AI要做什麼",
+      "theme": "【AI實驗中期報告】不懂AI的主管，為什麼總能指點AI江山？",
       "cover_background": "dining_room",
       "script_hint": "把拔做15天中期檢討，提到公司也在討論要導入AI → 討論AI的會議，沒有一個人真的用過AI工具 → 媽媽：那這30天你自己用AI做了這個帳號，在那個會議你說了什麼？→ 把拔：我沒有被邀請 → 媽媽放下碗：我需要先消化一下這個事實"
     },
