@@ -10,12 +10,12 @@ def _client():
 
 
 def _clean_json(raw: str) -> str:
-    raw = raw.strip()
-    if raw.startswith("```"):
-        raw = raw.split("```")[1]
-        if raw.startswith("json"):
-            raw = raw[4:]
-    return raw.strip().rstrip("```").strip()
+    # 取第一個 { 到最後一個 } 之間的內容，忽略 markdown 包裝和多餘文字
+    start = raw.find("{")
+    end = raw.rfind("}")
+    if start == -1 or end == -1:
+        return raw.strip()
+    return raw[start:end + 1]
 
 
 def generate_content(day: int, pillar: str, pillar_name: str, theme: str,
@@ -34,6 +34,7 @@ def generate_content(day: int, pillar: str, pillar_name: str, theme: str,
                     config=types.GenerateContentConfig(
                         system_instruction=SYSTEM_PROMPT,
                         max_output_tokens=4000,
+                        response_mime_type="application/json",
                     ),
                 )
                 result = json.loads(_clean_json(response.text))
