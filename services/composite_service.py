@@ -157,40 +157,38 @@ def _draw_text_box(draw: ImageDraw.ImageDraw, canvas: Image.Image,
 
 def render_cover(background: str, title: str,
                  output_path: str, total: int = 6) -> bool:
-    """第 1 頁封面：背景 + 標題"""
+    """封面頁：全畫面暗色遮罩 + 標題大字垂直置中"""
     try:
         canvas = _load_bg(background).convert("RGBA")
-        draw = ImageDraw.Draw(canvas)
 
-        # 底部漸層暗化
-        grad = Image.new("RGBA", (CANVAS_W, 500), (0, 0, 0, 0))
-        gd = ImageDraw.Draw(grad)
-        for i in range(500):
-            alpha = int(200 * (i / 500))
-            gd.line([(0, i), (CANVAS_W, i)], fill=(0, 0, 0, alpha))
-        canvas.alpha_composite(grad, dest=(0, CANVAS_H - 500))
+        # 全畫面半透明暗色遮罩，讓文字清晰
+        overlay = Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 160))
+        canvas.alpha_composite(overlay)
 
         draw = ImageDraw.Draw(canvas)
 
-        # 標題（置中）
-        tf = _font(62, bold=True)
+        # 標題大字：垂直置中，字型 84
+        tf = _font(84, bold=True)
         lines = _wrap(title, tf, CANVAS_W - 120)
-        y = CANVAS_H - 300
+        line_h = 108
+        total_text_h = len(lines[:3]) * line_h
+        y = (CANVAS_H - total_text_h) // 2 - 40
         for line in lines[:3]:
             lw = tf.getbbox(line)[2]
             draw.text(((CANVAS_W - lw) // 2, y), line, font=tf, fill=(255, 255, 255))
-            y += 82
+            y += line_h
 
-        # 帳號名（置中）
-        af = _font(32)
-        aw = af.getbbox("工程師把拔")[2]
-        draw.text(((CANVAS_W - aw) // 2, CANVAS_H - 70), "工程師把拔", font=af, fill=(200, 200, 200))
+        # 帳號名置中，在標題下方
+        af = _font(34)
+        label = "@工程師把拔"
+        aw = af.getbbox(label)[2]
+        draw.text(((CANVAS_W - aw) // 2, y + 36), label, font=af, fill=(180, 200, 255))
 
-        # 頁碼
+        # 頁碼右下角
         pf = _font(30)
         lp = f"1  /  {total}"
         pw = pf.getbbox(lp)[2]
-        draw.text((CANVAS_W - 60 - pw, CANVAS_H - 70), lp, font=pf, fill=(200, 200, 200))
+        draw.text((CANVAS_W - 60 - pw, CANVAS_H - 60), lp, font=pf, fill=(160, 160, 160))
 
         canvas.convert("RGB").save(output_path, "JPEG", quality=95)
         print(f"[Composite] 封面完成：{output_path}")
