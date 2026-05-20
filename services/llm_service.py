@@ -5,12 +5,11 @@ from google.genai import types
 from config.prompts import SYSTEM_PROMPT, get_story_prompt, get_report_prompt
 
 
-def _client():
+def _gemini_client():
     return genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
 
 
 def _clean_json(raw: str) -> str:
-    # 取第一個 { 到最後一個 } 之間的內容，忽略 markdown 包裝和多餘文字
     start = raw.find("{")
     end = raw.rfind("}")
     if start == -1 or end == -1:
@@ -20,11 +19,10 @@ def _clean_json(raw: str) -> str:
 
 def generate_content(day: int, pillar: str, pillar_name: str, theme: str,
                      content_type: str, script_hint: str = "") -> dict:
-    """使用 Gemini 2.5 Flash 生成今日繪本故事內容"""
-    client = _client()
+    """生成今日繪本故事，使用 Gemini 2.5 Flash"""
     prompt = get_story_prompt(day, pillar, pillar_name, theme, content_type, script_hint)
+    client = _gemini_client()
 
-    # 優先用 2.5 Pro（品質最好），失敗則降級用 Flash
     for model in ["gemini-2.5-flash", "gemini-flash-latest"]:
         for attempt in range(2):
             try:
@@ -38,28 +36,37 @@ def generate_content(day: int, pillar: str, pillar_name: str, theme: str,
                     ),
                 )
                 result = json.loads(_clean_json(response.text))
-                print(f"[Gemini] 使用模型：{model}")
+                print(f"[LLM] 使用模型：{model}")
                 return result
             except json.JSONDecodeError as e:
-                print(f"[Gemini] {model} JSON 解析失敗（第 {attempt+1} 次）：{e}")
+                print(f"[LLM] {model} JSON 解析失敗（第 {attempt+1} 次）：{e}")
             except Exception as e:
-                print(f"[Gemini] {model} 失敗：{e}")
-                break  # 換下一個模型
+                print(f"[LLM] {model} 失敗：{e}")
+                break
 
-    raise ValueError("所有模型均無法生成有效內容，請重試")
+    raise ValueError("Gemini 無法生成有效內容，請稍後重試")
 
 
 def generate_report(posts_data: list, insights_data: dict) -> str:
-    """使用 Gemini 2.5 Flash 生成每日報告"""
-    client = _client()
+    """生成每日報告，使用 Gemini"""
+    client = _gemini_client()
     prompt = get_report_prompt(posts_data, insights_data)
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            system_instruction=SYSTEM_PROMPT,
-            max_output_tokens=2000,
-        ),
-    )
-    return response.text
+    for model in ["gemini-2.5-flash", "gemini-flash-latest"]:
+        for attempt in range(2):
+            try:
+                response = client.models.generate_content(
+                    model=model,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        system_instruction=SYSTEM_PROMPT,
+                        max_output_tokens=4000,
+                    ),
+                )
+                print(f"[LLM] 報告使用模型：{model}")
+                return response.text
+            except Exception as e:
+                print(f"[LLM] {model} 報告失敗（第 {attempt+1} 次）：{e}")
+                break
+
+    raise ValueError("Gemini 無法生成報告，請稍後重試")
