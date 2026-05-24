@@ -66,6 +66,11 @@ def fetch_ig_insights() -> tuple[list, str]:
 def analyze_with_gemini(posts_data: list, calendar: dict, ig_status: str) -> str:
     client = genai.Client(api_key=GOOGLE_API_KEY)
     schedule = calendar.get("schedule", [])
+    start_date = datetime.date(2026, 5, 1)
+    today_date = datetime.date.today()
+    current_day = (today_date - start_date).days + 1
+    adj_start = current_day
+    adj_end = min(current_day + 4, 30)
 
     pillar_count = {}
     for entry in schedule:
@@ -107,7 +112,7 @@ IG 貼文數據：{ig_block}
 IG 2025 演算法重點（Reels 優先、留言權重最高、前3秒留存率、收藏代表延遲滿足）。分析此帳號「Anna一句話」格式的演算法優勢。列出3個具體優化動作（例：在輪播第一頁加勾子文字、在留言區置頂問題引導留言等）。
 
 ## 3. 已調整的主題清單
-列出 Day 17-21 共 5 天的主題調整建議（這些天尚未發布）。
+列出 Day {adj_start}-{adj_end} 共 5 天的主題調整建議（這些天尚未發布）。
 格式：Day XX | 支柱 | 舊主題 → 建議新主題 | 一句話調整原因
 
 ## 4. 下週策略方向
@@ -118,7 +123,7 @@ IG 2025 演算法重點（Reels 優先、留言權重最高、前3秒留存率�
 - 社群互動策略（發文後前30分鐘應做什麼）"""
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-2.0-flash",
         contents=prompt,
         config=types.GenerateContentConfig(
             max_output_tokens=16000,
@@ -129,71 +134,40 @@ IG 2025 演算法重點（Reels 優先、留言權重最高、前3秒留存率�
 
 
 # ── Step 4：更新行事曆 ─────────────────────────────────────────────────────────
+def _parse_adjustments_from_analysis(section3: str, target_start: int, target_end: int) -> list:
+    """從 Gemini 分析的第 3 區塊直接解析主題調整，格式：Day XX | 支柱 | 舊主題 → 新主題 | 原因"""
+    import re
+    adjustments = []
+    for line in section3.splitlines():
+        line = line.strip().lstrip("*- ").strip()
+        m = re.match(r'Day\s*(\d+)\s*\|[^|]*\|[^→]*→\s*(.+?)\s*\|\s*(.+)', line)
+        if m:
+            day = int(m.group(1))
+            if target_start <= day <= target_end:
+                new_theme = m.group(2).strip().strip("**").strip()
+                reason = m.group(3).strip()[:20]
+                adjustments.append({"day": day, "new_theme": new_theme, "reason": reason})
+    return adjustments
+
+
 def update_calendar(gemini_analysis: str, calendar: dict) -> tuple[dict, list]:
-    client = genai.Client(api_key=GOOGLE_API_KEY)
     schedule = calendar.get("schedule", [])
 
-    # Day 17-21 為待調整天數
-    target_days = [e for e in schedule if 17 <= e["day"] <= 21]
-    future_summary = json.dumps(
-        [{"day": e["day"], "pillar": e["pillar"], "theme": e["theme"]}
-         for e in target_days],
-        ensure_ascii=False
-    )
+    # 動態計算當前天數（實驗從 2026-05-01 開始）
+    start_date = datetime.date(2026, 5, 1)
+    today_date = datetime.date.today()
+    current_day = (today_date - start_date).days + 1
+    target_start = current_day
+    target_end = min(current_day + 4, 30)
 
-    # 從分析中提取第 3 區塊的調整建議
+    # 從分析中提取第 3 區塊的調整建議（直接解析，不再呼叫 Gemini）
     section3 = ""
     if "## 3." in gemini_analysis:
         parts = gemini_analysis.split("## 3.")
         if len(parts) > 1:
             section3 = parts[1].split("## 4.")[0].strip()
 
-    prompt = f"""根據以下策略分析，產出 JSON 格式的行事曆調整清單。
-
-策略分析中的主題調整建議：
-{section3[:800]}
-
-當前 Day 17-21 主題：
-{future_summary}
-
-請輸出純 JSON array（不要有任何說明文字、不要 markdown）：
-[{{"day": 17, "new_theme": "新主題文字", "reason": "一句話原因"}}, ...]
-
-要求：
-1. 只包含需要調整的天數（day 17 到 21）
-2. new_theme 用繁體中文，保持工程師把拔人設
-3. reason 不超過20字"""
-
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            max_output_tokens=2000,
-            thinking_config=types.ThinkingConfig(thinking_budget=0),
-        ),
-    )
-
-    raw = response.text.strip()
-    # 清理可能的 markdown
-    for marker in ["```json", "```"]:
-        raw = raw.replace(marker, "")
-    raw = raw.strip()
-
-    try:
-        adjustments = json.loads(raw)
-        if not isinstance(adjustments, list):
-            adjustments = []
-    except json.JSONDecodeError:
-        # 嘗試找出 JSON array 部分
-        start = raw.find("[")
-        end = raw.rfind("]") + 1
-        if start >= 0 and end > start:
-            try:
-                adjustments = json.loads(raw[start:end])
-            except Exception:
-                adjustments = []
-        else:
-            adjustments = []
+    adjustments = _parse_adjustments_from_analysis(section3, target_start, target_end)
 
     adjustment_map = {a["day"]: a for a in adjustments if isinstance(a, dict)}
     adjusted_list = []
@@ -257,9 +231,17 @@ def main():
     with open(CALENDAR_PATH, "r", encoding="utf-8") as f:
         calendar = json.load(f)
 
-    print("\n[Step 3] Gemini 策略分析...")
-    gemini_analysis = analyze_with_gemini(posts_data, calendar, ig_status)
-    print(f"[Step 3] 完成，分析長度 {len(gemini_analysis)} 字元")
+    # 使用快取避免重複呼叫 Gemini（配額有限）
+    cache_path = REPORTS_DIR / f".analysis_cache_{TODAY}.txt"
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    if cache_path.exists():
+        gemini_analysis = cache_path.read_text(encoding="utf-8")
+        print(f"\n[Step 3] 使用快取分析，長度 {len(gemini_analysis)} 字元")
+    else:
+        print("\n[Step 3] Gemini 策略分析...")
+        gemini_analysis = analyze_with_gemini(posts_data, calendar, ig_status)
+        cache_path.write_text(gemini_analysis, encoding="utf-8")
+        print(f"[Step 3] 完成，分析長度 {len(gemini_analysis)} 字元")
 
     print("\n[Step 4] 更新內容行事曆...")
     calendar, adjusted_list = update_calendar(gemini_analysis, calendar)

@@ -223,7 +223,7 @@
       "day": 24,
       "type": "carousel",
       "pillar": "office",
-      "theme": "升遷的不是最厲害的，是最會說話的",
+      "theme": "升遷的秘訣不是技術，是讓對的人記得你",
       "cover_background": "living_room",
       "script_hint": "把拔的同事升遷了，技術能力普通但很會在會議上發言 → 把拔回家有點悶 → 媽媽：你覺得不公平？→ 把拔：有點 → 媽媽：你上次在全部門會議，說過幾次話？→ 把拔想了很久：……一次 → 媽媽：我懂你的感受，但我也懂公司的邏輯了"
     },
@@ -231,7 +231,7 @@
       "day": 25,
       "type": "carousel",
       "pillar": "tech",
-      "theme": "雲端是什麼？Anna：就是別人的電腦",
+      "theme": "雲端崩了怎麼辦？Anna：去找那個別人",
       "cover_background": "living_room",
       "script_hint": "把拔說資料存在雲端 → Anna：雲端在哪裡？→ 把拔：很遠的機房裡 → Anna：那如果那個機房倒了呢？→ 把拔：就壞了 → Anna：所以雲端是別人的電腦？→ 把拔：……技術上沒有錯 → 媽媽：那「上雲」聽起來沒那麼厲害了"
     },
@@ -239,7 +239,7 @@
       "day": 26,
       "type": "carousel",
       "pillar": "workplace",
-      "theme": "User：之前那個工程師都說可以",
+      "theme": "User：之前的工程師說沒問題，但他已經離職了",
       "cover_background": "office_desk",
       "script_hint": "把拔說某需求技術上有難度 → User：可是之前那個工程師說可以啊 → 把拔OS：那個工程師三個月前離職了 → Anna：把拔，如果我說我上一個老師說不用寫這個作業，你信嗎？→ 把拔：我會去確認 → Anna：那User的「之前那個工程師」呢？→ 把拔：……已經無法確認了"
     },
@@ -247,7 +247,7 @@
       "day": 27,
       "type": "carousel",
       "pillar": "office",
-      "theme": "需求沒有最終版，只有最新版",
+      "theme": "「這是最終版 v7」——我聽過太多次了",
       "cover_background": "dining_room",
       "script_hint": "把拔今天收到「最終版需求文件v7」→ 媽媽：v7？→ 把拔：從v1到v7，每次都說這次是最終版 → 媽媽：那什麼是真的最終版？→ 把拔：上線那天 → 媽媽：如果上線後還改呢？→ 把拔：那叫優化 → 媽媽：需求沒有終點，只是換了名字"
     },
@@ -255,7 +255,7 @@
       "day": 28,
       "type": "carousel",
       "pillar": "tech",
-      "theme": ".NET vs 其他語言：把拔的真實告白",
+      "theme": ".NET 用了十年：是選擇，還是習慣？Anna 說：被迫的",
       "cover_background": "office_desk",
       "script_hint": "把拔說自己用.NET很多年了 → Anna：那為什麼不用更新的語言？→ 把拔：因為公司系統都是.NET → Anna：所以是被迫的？→ 把拔：這叫做技術選型的歷史包袱考量 → Anna：被迫的 → 媽媽（不抬頭）：她說得對"
     },
