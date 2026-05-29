@@ -7,7 +7,11 @@
       "name": "技術白話",
       "description": "複雜技術講到人聽得懂。Anna 不說技術詞，只用五歲小孩的生活問題開場；Chris 用費曼技巧把技術概念變成生活比喻，再把比喻翻回技術語言；Anna 最後用童言童語把比喻套回家庭情境，形成可愛反殺。負責收藏、轉發與技術白話教育。",
       "formula": "Anna生活疑問 → Chris生活比喻 → Anna追問 → Chris技術翻譯 → Anna童言反殺 → 收藏金句",
-      "backgrounds": ["dining_room", "office_desk", "living_room"]
+      "backgrounds": [
+        "dining_room",
+        "office_desk",
+        "living_room"
+      ]
     },
     "workplace": {
       "name": "IT職場奇聞",
@@ -15,7 +19,10 @@
       "formula": "迷因標題 → 旁白敘述奇聞 → 旁白荒謬升級 → Chris困惑 → Chris工程師視角抱怨 → Chris浮誇崩潰 → Tag共鳴金句",
       "ta": "工程師、IT、PM協作過的人、被奇怪需求傷害過的人",
       "tone": "職場鬼故事、工程師共鳴、浮誇抱怨、迷因感",
-      "backgrounds": ["office_desk", "science_park_lobby"]
+      "backgrounds": [
+        "office_desk",
+        "science_park_lobby"
+      ]
     },
     "home_meme": {
       "name": "家裡有工程師",
@@ -23,7 +30,12 @@
       "formula": "迷因標題（家裡有工程師，不能亂）→ Anna旁白觀察第一個行為 → Anna旁白觀察第二個行為 → Chris技術邏輯解釋 → 媽咪生活現實補刀 → Chris默默rollback → Tag金句",
       "ta": "工程師的另一半、工程師家庭、IT工作者、有工程師朋友的人",
       "tone": "溫和幽默、夫妻日常、迷因感、工程師邏輯、rollback是愛",
-      "backgrounds": ["living_room", "dining_room", "bedroom", "office_desk"]
+      "backgrounds": [
+        "living_room",
+        "dining_room",
+        "bedroom",
+        "office_desk"
+      ]
     },
     "office": {
       "name": "大人腹黑學",
@@ -31,7 +43,12 @@
       "formula": "荒謬職場標題 → Chris描述事件 → Chris補充荒謬後續 → Anna小孩邏輯發問 → Chris用大人話合理化 → 媽咪生活比喻揭示真相 → 黑色幽默金句",
       "ta": "上班族、社畜、主管與員工、開過荒謬會議的人、被流程折磨過的人",
       "tone": "冷幽默、腹黑、職場荒謬、家庭飯桌吐槽、非技術也能懂",
-      "backgrounds": ["science_park_lobby", "office_desk", "dining_room", "living_room"]
+      "backgrounds": [
+        "science_park_lobby",
+        "office_desk",
+        "dining_room",
+        "living_room"
+      ]
     }
   },
   "schedule": [
@@ -40,7 +57,7 @@
       "type": "carousel",
       "pillar": "office",
       "theme": "30天AI自動發文實驗開始，第一天就被Anna問倒",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "封面方向：不要像公告，要像故事。封面文字建議：「我說 AI 會自動發文 / Anna 問：那你為什麼還在按？」 / hook素材：Anna看到把拔在電腦前忙著設定自動發文程式，問說「把拔，你不是說AI會自動做嗎？為什麼你還要自己一直按？」把拔答不出來 / 生活事件：把拔說自動化實驗很忙，忘記今天要準備Anna美術課的材料，媽咪提醒才想起 / 宅反差：把拔能默背cron job五個欄位的語法（分 時 日 月 星期），但Anna的美術課是星期幾都要問媽咪 / 媽咪方向：AI幫你排發文時間，你自己的時間還要我管"
     },
     {
@@ -48,7 +65,7 @@
       "type": "tech",
       "pillar": "tech",
       "theme": "API 是什麼？",
-      "cover_background": "",
+      "cover_background": "dining_room",
       "script_hint": "技術概念：API / P2方向：Anna問為什麼她不能直接去某個地方拿東西（用餐廳、廚房、或類似場景）/ P3方向：Chris 用「有規則的中間人負責傳話」解釋，不說API這個詞 / P6方向：Anna把「爸爸幫她問媽媽能不能吃東西」這個家庭場景，套回中間人傳話的比喻"
     },
     {
@@ -56,7 +73,7 @@
       "type": "workplace",
       "pillar": "workplace",
       "theme": "PM說這個功能很簡單",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "P1方向：迷因標題，把「簡單」兩字和工程師的崩潰對比 / P2方向：需求單就一句話，表面上看起來很小的改動 / P3方向：實際牽涉的系統、權限、流程，越說越多 / P4方向：Chris看到「很簡單」三字的沉默反應 / P5方向：這不是多一個元件，是依賴鏈的骨牌效應 / P6方向：最浮誇那句，把兩週工作包成一句「很簡單」的荒謬 / P7方向：傳給那個聽到「這很簡單」就開始重新估時的人"
     },
     {
@@ -64,7 +81,7 @@
       "type": "home_meme",
       "pillar": "home_meme",
       "theme": "Anna睡前一個問題，把拔分析半小時才發現問錯題",
-      "cover_background": "",
+      "cover_background": "bedroom",
       "script_hint": "P1方向：「家裡有工程師，睡前問題不能亂問。」Anna睡前隨口一問，觸發分析迴圈 / P2方向：「他會先把問題拆成幾個假說。」Chris拿出手機開始查 / P3方向：「再從最基礎的定義開始往下推。」越分析越深 / P4方向：「這叫遞迴。問題不是單獨存在的，它跟前提假設、邊界條件、終止條件都有關係。」 / P5方向：「我是不懂遞迴啦。但我知道你分析到一半，自己先睡著了。」 / P6方向：把拔默默把手機螢幕關掉，復原到睡覺版本 / P7方向：Tag那個把睡前故事變成架構分析、自己先睡著的工程師把拔"
     },
     {
@@ -72,7 +89,7 @@
       "type": "workplace",
       "pillar": "workplace",
       "theme": "User：這系統能不能跟Excel一樣，但不要像Excel？",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "P1方向：User要的東西和他不要的東西是同一個東西 / P2方向：需求說「功能要跟Excel一樣但介面不能像Excel」 / P3方向：四次確認會，每次結論都不一樣，需求越加越多 / P4方向：Chris聽完後的茫然反應 / P5方向：工程師視角，User描述的功能就是Excel，問題是他不想叫它Excel / P6方向：最浮誇那句，把「做一個Excel但不叫Excel」的荒謬說出來 / P7方向：Tag那個說「功能就要像那個，但不要那個樣子」的人"
     },
     {
@@ -80,7 +97,7 @@
       "type": "office",
       "pillar": "office",
       "theme": "最忙的人，被叫去開會討論他為什麼很忙",
-      "cover_background": "",
+      "cover_background": "dining_room",
       "script_hint": "P1方向：荒謬標題，最忙的人被叫去開會討論他為什麼忙 / P2方向：Chris描述：系統警報還在響，被PM拉去一個會議室，說今天要討論「為什麼Chris你這麼忙」 / P3方向：Chris補充：開會開了一小時，討論結果是：下週要再開一場會，更深入討論 / P4方向：Anna小孩邏輯問：「如果他太忙，把他叫來開會不是讓他更忙嗎？」 / P5方向：Chris合理化：這叫跨部門資訊對齊，讓大家知道你忙在哪裡 / P6方向：媽咪比喻：「就是廚師在炒菜，把他叫出來開會討論為什麼菜還沒好。」 / P7方向：最需要解決問題的人，在開會討論問題為什麼還沒解決。Tag那個在開會開到懷疑人生的人。"
     },
     {
@@ -88,7 +105,7 @@
       "type": "home_meme",
       "pillar": "home_meme",
       "theme": "家裡最強搜尋引擎，不是 Google，是 Anna",
-      "cover_background": "",
+      "cover_background": "living_room",
       "script_hint": "P1方向：「家裡有工程師，桌面資料夾不能亂開。」標題要有Anna是最強搜尋引擎的反差感 / P2方向：「他會先把資料夾分成三層。」觀察Chris建立資料夾結構 / P3方向：「再把敏感文件放最裡面。」繼續觀察分類動作 / P4方向：「這叫存取控制。文件不是單獨存在的，它跟使用者權限、資料夾層級、搜尋索引都有關係。」 / P5方向：「我是不懂存取控制啦。但我知道Anna十秒就找到你的購物記錄了。」 / P6方向：把拔默默把購物記錄移到新建的加密資料夾 / P7方向：Tag那個資料夾分了九層、全家還是都找得到的工程師"
     },
     {
@@ -96,7 +113,7 @@
       "type": "workplace",
       "pillar": "workplace",
       "theme": "User：我沒按送出，但資料應該要存起來吧？",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "P1方向：沒有按送出但資料要自動存的矛盾 / P2方向：旁白：User打了兩小時表單，沒按送出就關掉 / P3方向：隔天來問資料去哪了，說是系統的問題 / P4方向：Chris聽完的沉默反應 / P5方向：工程師視角，沒按送出就是明確的操作指令，系統照使用者的操作執行 / P6方向：浮誇，把「沒有按但資料要存」這個邏輯的荒謬說出來 / P7方向：Tag那個「我沒存但電腦應該要記得」的人"
     },
     {
@@ -104,7 +121,7 @@
       "type": "office",
       "pillar": "office",
       "theme": "最不懂流程的人，負責優化流程",
-      "cover_background": "",
+      "cover_background": "dining_room",
       "script_hint": "P1方向：荒謬標題，最不懂流程的人，負責優化流程 / P2方向：Chris描述：今天開了流程優化會議，主持人一開口就問「這個流程現在是誰在跑？」 / P3方向：Chris補充：會議開了兩小時，大家最後發現，負責優化流程的人，從來沒有完整跑過一次流程 / P4方向：Anna小孩邏輯問：「他都沒有走過，怎麼知道哪裡會跌倒？」 / P5方向：Chris合理化：這叫流程盤點，先不用真的會跑，只要先把大家叫來對齊 / P6方向：媽咪比喻：「所以就是找一個迷路的人，來設計逃生路線。」 / P7方向：不是流程被優化，是大家被流程教育了一次。Tag那個開會開到懷疑人生的人。"
     },
     {
@@ -112,7 +129,7 @@
       "type": "home_meme",
       "pillar": "home_meme",
       "theme": "把拔說他是家裡 Admin，媽咪拿起遙控器後，他閉嘴了",
-      "cover_background": "",
+      "cover_background": "dining_room",
       "script_hint": "P1方向：「家裡有工程師，Admin帳號不能亂給。」封面要白話，不要用Root/SuperUser，用「把拔說他是家裡Admin，媽咪拿起遙控器後，他閉嘴了」當標題感 / P2方向：「他會先說電腦要輸入密碼才能安裝東西。」Chris宣示管理員地位 / P3方向：「再跟全家說他才是家裡的Root。」繼續說明權限邊界 / P4方向：「這叫SuperUser。Admin不是單獨存在的，它跟系統穩定、安裝紀錄、使用習慣都有關係。」技術詞在P4才出現 / P5方向：「我是不懂Root啦。但我知道遙控器在哪裡、什麼時間看電視，是我在管。」 / P6方向：把拔默默把電腦密碼告訴媽咪 / P7方向：Tag那個IT系統是SuperUser、家裡是訪客帳號的工程師"
     },
     {
@@ -120,7 +137,7 @@
       "type": "workplace",
       "pillar": "workplace",
       "theme": "Bug 不會突然出現，它通常是昨天有人說「只改一行」",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "P1方向：迷因標題，Bug出現和「只改一行」的因果關係，要sharp不要平鋪 / P2方向：旁白：User回報系統壞了，說昨天還好好的，完全不知道發生什麼 / P3方向：旁白：把拔想起昨天下班前有個「只改一行」的hotfix，悄悄Deploy上去了 / P4方向：Chris聽完User描述後的沉默反應，Bug時間點和Deploy時間點完美吻合 / P5方向：工程師視角：「只改一行」不是沒有代價，只是把代價推到明天 / P6方向：浮誇，「只改一行」說出口的那一刻就是在預訂明天的加班 / P7方向：傳給那個說「只改一行不會有問題」然後隔天請假的工程師"
     },
     {
@@ -128,7 +145,7 @@
       "type": "office",
       "pillar": "office",
       "theme": "踩坑最多的人，最後變成教育訓練講師",
-      "cover_background": "",
+      "cover_background": "living_room",
       "script_hint": "P1方向：荒謬標題，踩坑最多的人，最後變成教育訓練講師（和Day9的「不懂流程優化流程」有差異：這篇是靠「失敗紀錄」換來話語權）/ P2方向：Chris描述：同事一年內把production搞掛三次，每次都有不同的「原因說明」 / P3方向：Chris補充：第三次之後，主管說「他最了解這個系統的問題在哪裡」，指定他主辦新人教育訓練 / P4方向：Anna小孩邏輯問：「他做錯三次，現在要教別人怎麼做對？」 / P5方向：Chris合理化：這叫經驗傳承，踩過坑的人最知道坑在哪裡，所以最適合教別人 / P6方向：媽咪比喻：「就是讓最常跌倒的人，去教體育課。」 / P7方向：不是因為他做得最好，是因為他搞壞得最有心得。Tag那個被指派去教人、自己還在踩坑的人。"
     },
     {
@@ -136,7 +153,7 @@
       "type": "home_meme",
       "pillar": "home_meme",
       "theme": "把拔解釋前端後端，媽咪一句話讓他閉嘴",
-      "cover_background": "",
+      "cover_background": "dining_room",
       "script_hint": "P1方向：「家裡有工程師，廚房不能亂進。」 / P2方向：「他會先說廚房是後端，餐桌是前端。」Chris開始自發性解說 / P3方向：「再解釋為什麼使用者不應該直接碰資料庫。」繼續深入 / P4方向：「這叫前後端分層。廚房不是單獨存在的，它跟菜單設計、點餐流程、出餐時間都有關係。」 / P5方向：「我是不懂分層啦。但我知道你講了二十分鐘，飯都涼了。」 / P6方向：把拔默默收起解釋，開始吃冷掉的飯 / P7方向：Tag那個把家裡每個空間都架構設計過一遍的工程師"
     },
     {
@@ -144,7 +161,7 @@
       "type": "workplace",
       "pillar": "workplace",
       "theme": "User：你們IT應該很快，只是改一個欄位",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "P1方向：「只是一個欄位」和IT要做的事之間的落差 / P2方向：旁白：User說只是在報表加一個欄位，很快的 / P3方向：實際需要的步驟（schema改動、migration、備份、downtime、測試） / P4方向：Chris聽到「你們IT應該很快」後的反應 / P5方向：工程師視角，資料庫欄位不是表格貼紙，它有骨牌效應 / P6方向：浮誇，把「很快」和現實工作量的對比誇張化 / P7方向：Tag那個說「就改一個欄位而已」的人"
     },
     {
@@ -152,7 +169,7 @@
       "type": "office",
       "pillar": "office",
       "theme": "一群不用系統的人，決定系統怎麼改",
-      "cover_background": "",
+      "cover_background": "dining_room",
       "script_hint": "P1方向：荒謬標題，一群不用系統的人，決定系統怎麼改 / P2方向：Chris描述：高層開需求會議，討論要在IT系統加哪些功能，台上五個主管沒有一個人平時開這套系統 / P3方向：Chris補充：會議結論是要加「分析Dashboard」，Chris下台問了三個實際用系統的人，沒有一個人說他們需要Dashboard / P4方向：Anna小孩邏輯問：「他們不用這個，為什麼要決定它長什麼樣？那我是不是可以決定把拔的電腦要放什麼？」 / P5方向：Chris合理化：這叫策略層面的決策，高層負責方向，使用者負責執行 / P6方向：媽咪比喻：「就是從來不進廚房的人，決定廚房要怎麼改。」 / P7方向：做系統的人不在場，用系統的人沒被問，決定的人是不用系統的人。Tag那個需求被高層「規劃」過的工程師。"
     },
     {
@@ -160,7 +177,7 @@
       "type": "home_meme",
       "pillar": "home_meme",
       "theme": "把拔說他有記得，媽咪說：你的記憶體只撐三小時",
-      "cover_background": "",
+      "cover_background": "dining_room",
       "script_hint": "P1方向：「家裡有工程師，提醒不能亂發。」封面不要用Cache miss，要用白話：「把拔說他有記得，媽咪說：你的記憶體只撐三小時」 / P2方向：「他會先說他有把訊息記下來。」Chris辯解 / P3方向：「再翻手機確認通知記錄。」翻了半天找不到 / P4方向：「這叫Cache機制。提醒不是單獨存在的，它跟通知優先級、過期時間、記憶體容量都有關係。」技術詞在P4才出現 / P5方向：「我是不懂Cache啦。但我知道我說的話，你的記憶體只撐三小時。」 / P6方向：把拔默默在行事曆把媽咪說的所有事情全部加上提醒 / P7方向：Tag那個把工作提醒設得很仔細、老婆的話三小時就過期的工程師"
     },
     {
@@ -168,7 +185,7 @@
       "type": "workplace",
       "pillar": "workplace",
       "theme": "User：可以做一個像Google的搜尋嗎？我們有10筆資料",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "P1方向：Google等級搜尋 vs 10筆資料的落差 / P2方向：旁白：User說搜尋太慢，想要Google那種自動補全功能 / P3方向：把拔查了一下，資料庫裡總共只有10筆資料 / P4方向：Chris看著那10筆資料的反應 / P5方向：工程師視角，架構要配合問題規模，大砲解決10筆資料是過度工程化 / P6方向：浮誇，把Elasticsearch架構和10筆資料的荒謬對比說出來 / P7方向：Tag那個用火箭筒打蚊子的工程師"
     },
     {
@@ -176,7 +193,7 @@
       "type": "office",
       "pillar": "office",
       "theme": "寫程式的人在台下，做簡報的人在台上",
-      "cover_background": "",
+      "cover_background": "living_room",
       "script_hint": "P1方向：荒謬標題，寫程式的人在台下，做簡報的人在台上（不用「最閒的人」，改用畫面對比，避免攻擊感）/ P2方向：Chris描述：把拔花了三個月開發完新功能，同事花一個下午做了Keynote / P3方向：Chris補充：高層報告那天，同事在台上說「這是我們的成果」，把拔坐在台下 / P4方向：Anna小孩邏輯問：「蛋糕是你做的，為什麼他站前面拍照？」 / P5方向：Chris合理化：做出來的人負責做，說出來的人負責說，各司其職 / P6方向：媽咪比喻：「就是廚師煮完菜，端盤子的人說這道菜是我的作品。」 / P7方向：做的人寫程式，說的人升遷。Tag那個成果被「代表」過的工程師。"
     },
     {
@@ -184,7 +201,7 @@
       "type": "home_meme",
       "pillar": "home_meme",
       "theme": "Anna問Google：0.2秒有答案，問把拔：三小時未讀",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "P1方向：「家裡有工程師，訊息不能亂等。」封面強版：「Anna問Google，0.2秒有答案；問把拔，三小時未讀」這個對比就是笑點 / P2方向：「他會先說等一下就回。」然後繼續看Code Review / P3方向：「再說他只是在處理優先級更高的任務。」繼續辯護 / P4方向：「這叫非同步通訊。訊息不是單獨存在的，它跟處理佇列、優先順序、context switching成本都有關係。」非同步這詞在P4才出現，封面和P1/P2/P3不要用 / P5方向：「我是不懂非同步啦。但我知道Anna問Google，0.2秒有答案；問你，三小時沒回。」 / P6方向：把拔默默把LINE通知設回有聲音 / P7方向：Tag那個API response time優化到200ms、家人訊息三小時未讀的工程師"
     },
     {
@@ -192,7 +209,7 @@
       "type": "workplace",
       "pillar": "workplace",
       "theme": "User：我不知道我要什麼，但做出來我就知道對不對",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "P1方向：沒有需求但有能力review的矛盾 / P2方向：旁白：功能開發進Sprint，需求欄位只有三個字「待確認」 / P3方向：每次Demo之後說有點不一樣，但說不出哪裡不對，需求改了十二次 / P4方向：Chris聽完「你做出來我就知道」後的反應 / P5方向：工程師視角，沒有需求就開始做，等於往一個不知道在哪裡的目標射箭 / P6方向：浮誇崩潰，把「做出來才知道要什麼」這個邏輯的荒謬說出來 / P7方向：Tag那個「做出來才能confirm」的User或PM"
     },
     {
@@ -200,7 +217,7 @@
       "type": "office",
       "pillar": "office",
       "theme": "一群不懂AI的人，決定AI要做什麼",
-      "cover_background": "",
+      "cover_background": "dining_room",
       "script_hint": "P1方向：荒謬標題，一群不懂AI的人，決定AI要做什麼 / P2方向：Chris描述：公司開了「AI數位轉型戰略會議」，與會的五個高層，沒有一個人寫過程式 / P3方向：Chris補充：會議結論是「所有流程都要AI化」，Chris問說怎麼定義AI化，主持人說「就是用AI嘛，很簡單」 / P4方向：Anna小孩邏輯問：「他們不懂AI，怎麼決定AI要做什麼？就像我不會游泳，決定游泳池要蓋幾公尺？」 / P5方向：Chris合理化：這叫策略方向，方向是高層決定的，技術細節是工程師決定的 / P6方向：媽咪比喻：「就是不會做菜的人，決定今天要開一間餐廳，然後問廚師說菜單你看著辦。」 / P7方向：決定AI做什麼的人不懂AI，懂AI的人沒有被問。Tag那個被叫去「AI化一切」的工程師。"
     },
     {
@@ -208,7 +225,7 @@
       "type": "home_meme",
       "pillar": "home_meme",
       "theme": "把拔說一切都自動化了，Anna：那作業呢？",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "P1方向：「家裡有工程師，行程不能亂安排。」 / P2方向：「他會先宣布發文系統已經全部自動化了。」驕傲宣告 / P3方向：「再說三十天不用管，AI全部幫你排好了。」繼續炫耀 / P4方向：「這叫排程自動化。發文不是單獨存在的，它跟觸及率、最佳時間、演算法邏輯都有關係。」 / P5方向：「我是不懂排程啦。但我知道Anna的作業截止時間，你沒有排進去。」 / P6方向：把拔默默在行事曆手動加上「提醒Anna交作業」 / P7方向：Tag那個工作排程到分秒不差、家事還要手動的工程師把拔"
     },
     {
@@ -216,7 +233,7 @@
       "type": "workplace",
       "pillar": "workplace",
       "theme": "需求文件是空白的，但 deadline 是真的",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "P1方向：迷因標題，需求文件空白但deadline是真的，這個對比本身就是笑點（和Day20「不知道要什麼」差異：這篇強調「空白文件 + 真實deadline」的荒謬並存）/ P2方向：旁白：PM說這功能很急，這週要進Sprint，需求文件三個欄位只填了功能名稱 / P3方向：旁白：把拔問需求，PM說「功能就是那個感覺，你做出來我就知道對不對」 / P4方向：Chris看著空白文件旁邊寫著「本週上線」的反應 / P5方向：工程師視角：沒有需求就衝刺，只是更快往錯的方向跑 / P6方向：浮誇，空白文件可以存在，deadline卻一秒都不會等你 / P7方向：需求文件可以空白，deadline不行。Tag那個在空白規格裡加班的工程師"
     },
     {
@@ -224,7 +241,7 @@
       "type": "office",
       "pillar": "office",
       "theme": "升遷的不是最厲害的，是最會說話的",
-      "cover_background": "",
+      "cover_background": "living_room",
       "script_hint": "P1方向：荒謬標題，升遷的不是最厲害的，是最會說話的 / P2方向：Chris描述：同事技術能力普通，但每次週會都有清晰的成果報告，把自己做的每件事都說得很有條理 / P3方向：Chris補充：三個月後，同事升遷了，主管說他「溝通能力強、有影響力」 / P4方向：Anna小孩邏輯問：「那把拔你那麼厲害，為什麼都不說？」 / P5方向：Chris合理化：這叫職場能見度，技術能力是基本盤，說出來才能讓主管看見 / P6方向：媽咪比喻：「就是你每天把家裡打掃得很乾淨，但從來不說，等我說『你有做家事嗎？』，你才嗯一聲。」 / P7方向：做了不說，等於沒做。說了，才算做。Tag那個悶著頭做事從不匯報的工程師。"
     },
     {
@@ -232,7 +249,7 @@
       "type": "home_meme",
       "pillar": "home_meme",
       "theme": "把拔說資料上雲了，Anna問了一個讓他語塞的問題",
-      "cover_background": "",
+      "cover_background": "living_room",
       "script_hint": "P1方向：「家裡有工程師，照片不能亂存。」 / P2方向：「他會先說家裡的照片都已經備份上雲了。」Chris驕傲宣告 / P3方向：「再說有冗余備份，永遠不會遺失。」繼續強調安全性 / P4方向：「這叫雲端備份策略。照片不是單獨存在的，它跟儲存區域、備援節點、災難復原計畫都有關係。」 / P5方向：「我是不懂備份啦。但我知道下雨天Anna問照片會不會濕，你楞了三秒。」 / P6方向：把拔默默去確認那本實體相簿還在哪裡 / P7方向：Tag那個知道S3在哪個AZ、找不到家裡實體相簿的工程師"
     },
     {
@@ -240,7 +257,7 @@
       "type": "workplace",
       "pillar": "workplace",
       "theme": "前任說可以，現任打開程式碼後沉默了",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "P1方向：迷因標題，前任說可以，現任打開程式碼後沉默了（重點放在「接手爛攤子」，不只是批評前任）/ P2方向：旁白：User說這個功能之前的工程師說可以做，都說好了 / P3方向：旁白：把拔接手後翻開程式碼，發現前任對每一個需求都說可以，技術債清單比功能清單還長 / P4方向：Chris看著技術債清單的沉默表情 / P5方向：工程師視角：說「可以」是兩秒的事，收尾是繼任者的事，這叫技術債傳承 / P6方向：浮誇，「前任說可以」和現在爛攤子的體積不成比例 / P7方向：接手這個repo那天，就是接手前任所有的「可以」。Tag那個默默收爛攤子的工程師。"
     },
     {
@@ -248,7 +265,7 @@
       "type": "office",
       "pillar": "office",
       "theme": "需求沒有最終版，只有最新版",
-      "cover_background": "",
+      "cover_background": "dining_room",
       "script_hint": "P1方向：荒謬標題，需求沒有最終版，只有最新版 / P2方向：Chris描述：需求文件歷經v1、v1_final、v1_final_修改、v1_final_修改_OK，PM說「這次是真的最終版了」 / P3方向：Chris補充：開發到一半，PM說「對了，有一個小改動，不影響結構的那種」，然後整個資料庫schema要重新設計 / P4方向：Anna小孩邏輯問：「說最終是什麼意思？如果還會改，為什麼要叫最終？」 / P5方向：Chris合理化：這叫敏捷開發，需求會隨著理解深化而調整，這是正常的 / P6方向：媽咪比喻：「就是說今天吃火鍋，買好了材料，到了廚房說『對了，改吃麵，很小的改動』。」 / P7方向：需求沒有最終版，只有最新版。最終版，是你還沒碰到下一次改動之前的版本。Tag那個收到『最終版』超過三次的工程師。"
     },
     {
@@ -256,7 +273,7 @@
       "type": "home_meme",
       "pillar": "home_meme",
       "theme": "他說 Legacy 系統不能亂升級，然後自己的手機三個月沒更新",
-      "cover_background": "",
+      "cover_background": "office_desk",
       "script_hint": "P1方向：「家裡有工程師，手機不能亂更新。」封面強版：「他說Legacy系統不能亂升級，然後自己的手機三個月沒更新」，連結要清楚 / P2方向：「他會先說現在的版本很穩、很可靠。」為現狀辯護 / P3方向：「再說升級要評估相容性，不是說換就換。」繼續合理化 / P4方向：「這叫Legacy維護。系統不是單獨存在的，它跟既有模組、API介面、部署環境都有關係。」Legacy這詞在P4才出現 / P5方向：「我是不懂Legacy啦。但我知道你手機的更新提示，你點稍後點了三個月。」 / P6方向：把拔默默把iOS更新按下去，沒有說話 / P7方向：Tag那個幫公司規劃遷移計畫寫了兩年、自己手機系統三年沒更新的工程師"
     },
     {
@@ -264,7 +281,7 @@
       "type": "carousel",
       "pillar": "workplace",
       "theme": "30天尾聲：把拔學到的不是技術，是Anna",
-      "cover_background": "",
+      "cover_background": "living_room",
       "script_hint": "這篇品牌深度篇，不要期待高轉發，目標是讓跟了三十天的人有情感收尾 / hook素材：Anna問「把拔，你做完三十天了！你學到什麼？」，把拔說了一堆AI和自動化技術，Anna說「我學到怎麼綁鞋帶，你有沒有看到？」 / 生活事件：三十天實驗快結束，把拔複盤數據、分析指標，突然想起這個月不知道有幾天Anna主動跑來找他說話，他說「等一下」 / 宅反差：把拔追蹤了每一天的觸及率、存數、留言數、轉發率，但沒有記錄這個月說了幾次晚安故事 / 媽咪方向：你的實驗數據很漂亮，Anna說你這個月很忙 / 寫作原則：真誠第一，不要硬塞技術類比，這是情感篇"
     },
     {
@@ -272,7 +289,7 @@
       "type": "carousel",
       "pillar": "office",
       "theme": "30天大結局：最努力的不一定最先被看見",
-      "cover_background": "",
+      "cover_background": "dining_room",
       "script_hint": "封面方向：不要雞湯，要有情緒。建議封面文字：「做了30天，沒有爆紅 / 但Anna說：那就繼續啊」這句有帳號靈魂 / hook素材：Anna問「把拔，你做了三十天，現在很多人認識你了嗎？」，把拔說「有進步，但還在路上」，Anna說「那繼續做啊，我跳繩也練了好久才學會的」 / 生活事件：三十天結束，把拔看數據，收藏最多的不是技術最複雜的那篇，是Anna睡前問了一個問題讓把拔楞住的那篇 / 宅反差：把拔建了整套AI自動化系統、優化了每一個環節，但最打動人的內容，是最真實的家庭日常 / 媽咪方向：三十天，最努力的是哪一天？每一天都算"
     }
   ]

@@ -2,7 +2,10 @@
 venv/
 __pycache__/
 *.pyc
-output/
+output/*
+!output/reports/
+output/reports/*
+!output/reports/*.md
 data/publish_log.json
 data/performance_history.json
 logs/
