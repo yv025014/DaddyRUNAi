@@ -1,0 +1,429 @@
+"""
+composite_service.py
+背景 + 角色立繪（自動去背）+ 對話文字 → IG 輪播單頁
+"""
+import os
+from pathlib import Path
+from PIL import Image, ImageDraw, ImageFont
+
+BASE_DIR = Path(__file__).parent.parent
+CHAR_DIR = BASE_DIR / "assets" / "characters"
+BG_DIR = BASE_DIR / "assets" / "backgrounds"
+
+# ── 資產詞彙表（與 assets/ 目錄同步） ──────────────────────────
+VALID_BACKGROUNDS = {
+    "bedroom", "car_interior", "convenience_store", "dining_room",
+    "living_room", "office_desk", "outdoor_park", "science_park_lobby",
+    "supermarket",
+}
+
+VALID_MOODS = {
+    "anna":  {"curious", "happy", "pointing", "proud", "smirk"},
+    "chris": {"confused", "defeated", "embarrassed", "normal", "proud", "surprised", "thinking"},
+    "mom":   {"deadpan", "facepalm", "proud", "skeptical", "smiling"},
+}
+
+# LLM 可能生成的替代名 → 最近資產
+_BG_ALIAS: dict[str, str] = {
+    "park": "outdoor_park", "outdoor": "outdoor_park", "garden": "outdoor_park",
+    "office": "office_desk", "desk": "office_desk", "work": "office_desk",
+    "kitchen": "dining_room", "table": "dining_room", "restaurant": "dining_room",
+    "living": "living_room", "sofa": "living_room", "couch": "living_room",
+    "bed": "bedroom", "sleep": "bedroom",
+    "car": "car_interior", "drive": "car_interior", "commute": "car_interior",
+    "store": "convenience_store", "shop": "convenience_store",
+    "lobby": "science_park_lobby", "company": "science_park_lobby",
+}
+
+_MOOD_ALIAS: dict[str, dict[str, str]] = {
+    "anna": {
+        "neutral": "curious", "normal": "curious", "excited": "happy",
+        "smiling": "happy", "smile": "happy", "confused": "curious",
+        "thinking": "curious", "pointing_at": "pointing",
+    },
+    "chris": {
+        "sad": "defeated", "happy": "normal", "neutral": "normal",
+        "smile": "normal", "smiling": "normal", "excited": "proud",
+        "worried": "thinking", "thoughtful": "thinking",
+    },
+    "mom": {
+        "neutral": "deadpan", "normal": "smiling", "happy": "smiling",
+        "confused": "skeptical", "disappointed": "facepalm", "sigh": "facepalm",
+    },
+}
+
+CANVAS_W, CANVAS_H = 1080, 1350
+
+FONT_PATH = "/System/Library/AssetsV2/com_apple_MobileAsset_Font7/3419f2a427639ad8c8e139149a287865a90fa17e.asset/AssetData/PingFang.ttc"
+FONT_FALLBACK = "/System/Library/Fonts/STHeiti Medium.ttc"
+
+SPEAKER_COLORS = {
+    "chris": (52, 120, 246),
+    "anna":  (229, 77, 114),
+    "mom":   (56, 161, 105),
+    "narrator": (80, 80, 80),
+}
+SPEAKER_LABELS = {
+    "chris": "Chris 把拔",
+    "anna":  "Anna",
+    "mom":   "媽咪",
+    "narrator": "",
+}
+
+
+def _font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
+    # PingFang TC Regular=index 2, Medium=index 6, Semibold=index 10
+    idx = 10 if bold else 2
+    try:
+        return ImageFont.truetype(FONT_PATH, size, index=idx)
+    except Exception:
+        pass
+    try:
+        return ImageFont.truetype(FONT_FALLBACK, size)
+    except Exception:
+        pass
+    return ImageFont.load_default()
+
+
+def _load_bg(name: str) -> Image.Image:
+    for ext in ("png", "jpg", "jpeg"):
+        p = BG_DIR / f"{name}.{ext}"
+        if p.exists():
+            img = Image.open(p).convert("RGB")
+            # cover-crop to canvas
+            r = img.width / img.height
+            cr = CANVAS_W / CANVAS_H
+            if r > cr:
+                nw, nh = int(CANVAS_H * r), CANVAS_H
+            else:
+                nw, nh = CANVAS_W, int(CANVAS_W / r)
+            img = img.resize((nw, nh), Image.LANCZOS)
+            l, t = (nw - CANVAS_W) // 2, (nh - CANVAS_H) // 2
+            return img.crop((l, t, l + CANVAS_W, t + CANVAS_H))
+    if name != "dining_room":
+        print(f"[Composite] 找不到背景 '{name}'，fallback → dining_room")
+        return _load_bg("dining_room")
+    raise FileNotFoundError("找不到預設背景 dining_room，請確認資產完整")
+
+
+def _remove_bg(img: Image.Image) -> Image.Image:
+    """用 rembg 去除灰色背景，回傳 RGBA"""
+    try:
+        from rembg import remove
+        return remove(img)
+    except Exception as e:
+        print(f"[Composite] rembg 失敗，改用顏色去背：{e}")
+        return _chroma_key(img)
+
+
+def _chroma_key(img: Image.Image, tolerance: int = 30) -> Image.Image:
+    """備援：取左上角顏色作為背景色，顏色相近的像素設為透明"""
+    img = img.convert("RGBA")
+    data = img.load()
+    bg = data[0, 0][:3]
+    for y in range(img.height):
+        for x in range(img.width):
+            r, g, b, a = data[x, y]
+            if abs(r - bg[0]) + abs(g - bg[1]) + abs(b - bg[2]) < tolerance * 3:
+                data[x, y] = (r, g, b, 0)
+    return img
+
+
+def _load_char(speaker: str, mood: str, height: int = 780) -> Image.Image | None:
+    p = CHAR_DIR / speaker / f"{mood}.png"
+    if not p.exists():
+        print(f"[Composite] 找不到角色圖：{p}，改用 normal")
+        p = CHAR_DIR / speaker / "normal.png"
+    if not p.exists():
+        return None
+
+    img = Image.open(p)
+    if img.mode != "RGBA":
+        img = _remove_bg(img)
+
+    ratio = height / img.height
+    nw = int(img.width * ratio)
+    return img.resize((nw, height), Image.LANCZOS)
+
+
+def _wrap(text: str, font: ImageFont.FreeTypeFont, max_w: int) -> list[str]:
+    result = []
+    for paragraph in text.split("\n"):
+        cur = ""
+        for ch in paragraph:
+            test = cur + ch
+            if font.getbbox(test)[2] > max_w and cur:
+                result.append(cur)
+                cur = ch
+            else:
+                cur = test
+        if cur:
+            result.append(cur)
+    return result
+
+
+def _draw_text_box(draw: ImageDraw.ImageDraw, canvas: Image.Image,
+                   speaker: str, text: str, page: int, total: int):
+    """底部白色圓角文字框 + 說話者標籤 + 對話 + 頁碼"""
+    box_top = CANVAS_H - 370
+    box_margin = 32
+
+    # 白色圓角底板
+    overlay = Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 0))
+    od = ImageDraw.Draw(overlay)
+    od.rounded_rectangle(
+        [(box_margin, box_top), (CANVAS_W - box_margin, CANVAS_H - box_margin)],
+        radius=28,
+        fill=(255, 255, 255, 235),
+    )
+    canvas.paste(Image.alpha_composite(
+        Image.new("RGBA", canvas.size, (0, 0, 0, 0)), overlay
+    ).convert("RGB"), mask=overlay.split()[3])
+
+    # 說話者標籤（彩色）
+    color = SPEAKER_COLORS.get(speaker, (80, 80, 80))
+    label = SPEAKER_LABELS.get(speaker, speaker)
+    lf = _font(36)
+    draw.text((box_margin + 36, box_top + 26), label, font=lf, fill=color)
+
+    # 對話文字
+    tf = _font(50)
+    lines = _wrap(text, tf, CANVAS_W - box_margin * 2 - 72)
+    y = box_top + 82
+    for line in lines[:4]:
+        draw.text((box_margin + 36, y), line, font=tf, fill=(28, 28, 28))
+        y += 64
+
+    # 頁碼（右下角）
+    pf = _font(30)
+    label_p = f"{page}  /  {total}"
+    pw = pf.getbbox(label_p)[2]
+    draw.text((CANVAS_W - box_margin - pw - 20, CANVAS_H - box_margin - 40),
+              label_p, font=pf, fill=(180, 180, 180))
+
+
+def render_cover(background: str, title: str,
+                 output_path: str, total: int = 6) -> bool:
+    """封面頁：全畫面暗色遮罩 + 標題大字垂直置中"""
+    try:
+        canvas = _load_bg(background).convert("RGBA")
+
+        # 全畫面半透明暗色遮罩，讓文字清晰
+        overlay = Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 160))
+        canvas.alpha_composite(overlay)
+
+        draw = ImageDraw.Draw(canvas)
+
+        # 標題大字：垂直置中，字型 84
+        tf = _font(84, bold=True)
+        lines = _wrap(title, tf, CANVAS_W - 120)
+        line_h = 108
+        total_text_h = len(lines[:3]) * line_h
+        y = (CANVAS_H - total_text_h) // 2 - 40
+        for line in lines[:3]:
+            lw = tf.getbbox(line)[2]
+            draw.text(((CANVAS_W - lw) // 2, y), line, font=tf, fill=(255, 255, 255))
+            y += line_h
+
+        # 帳號名置中，在標題下方
+        af = _font(34)
+        label = "@工程師把拔"
+        aw = af.getbbox(label)[2]
+        draw.text(((CANVAS_W - aw) // 2, y + 36), label, font=af, fill=(180, 200, 255))
+
+        # 頁碼右下角
+        pf = _font(30)
+        lp = f"1  /  {total}"
+        pw = pf.getbbox(lp)[2]
+        draw.text((CANVAS_W - 60 - pw, CANVAS_H - 60), lp, font=pf, fill=(160, 160, 160))
+
+        canvas.convert("RGB").save(output_path, "JPEG", quality=95)
+        print(f"[Composite] 封面完成：{output_path}")
+        return True
+    except Exception as e:
+        print(f"[Composite] 封面失敗：{e}")
+        return False
+
+
+def _draw_narrator_box(draw: ImageDraw.ImageDraw, canvas: Image.Image,
+                        text: str, page: int, total: int):
+    """旁白頁：無角色，大字置中偏下，quote card 風格"""
+    box_h    = 320
+    box_top  = CANVAS_H // 2 + 80
+    box_margin = 48
+
+    # 半透明白色圓角框
+    overlay = Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 0))
+    od = ImageDraw.Draw(overlay)
+    od.rounded_rectangle(
+        [(box_margin, box_top), (CANVAS_W - box_margin, box_top + box_h)],
+        radius=28,
+        fill=(255, 255, 255, 230),
+    )
+    canvas.paste(Image.alpha_composite(
+        Image.new("RGBA", canvas.size, (0, 0, 0, 0)), overlay
+    ).convert("RGB"), mask=overlay.split()[3])
+
+    # 大字水平置中
+    tf = _font(60, bold=True)
+    lines = _wrap(text, tf, CANVAS_W - box_margin * 2 - 80)
+    line_h = 78
+    total_text_h = len(lines) * line_h
+    y = box_top + (box_h - total_text_h) // 2
+    for line in lines[:3]:
+        lw = tf.getbbox(line)[2]
+        draw.text(((CANVAS_W - lw) // 2, y), line, font=tf, fill=(28, 28, 28))
+        y += line_h
+
+    # 頁碼右下角
+    pf = _font(30)
+    label_p = f"{page}  /  {total}"
+    pw = pf.getbbox(label_p)[2]
+    draw.text((CANVAS_W - box_margin - pw - 20, box_top + box_h - 44),
+              label_p, font=pf, fill=(160, 160, 160))
+
+
+def render_dialogue(background: str, speaker: str, mood: str,
+                    story_text: str, page: int, total: int,
+                    output_path: str) -> bool:
+    """對話頁：背景 + 角色立繪 + 文字框（narrator speaker 則只有背景 + 大字）"""
+    try:
+        canvas = _load_bg(background).convert("RGBA")
+
+        if speaker == "narrator":
+            # 旁白頁：全幅背景 + 置中大字，無角色
+            rgb = canvas.convert("RGB")
+            draw = ImageDraw.Draw(rgb)
+            _draw_narrator_box(draw, rgb, story_text, page, total)
+        else:
+            # 一般對話頁：角色立繪 + 底部文字框
+            char = _load_char(speaker, mood, height=780)
+            if char:
+                char_y = CANVAS_H - 370 - char.height + 40
+                char_x = CANVAS_W - char.width - 10 if speaker == "anna" else 10
+                canvas.alpha_composite(char, dest=(char_x, max(0, char_y)))
+            rgb = canvas.convert("RGB")
+            draw = ImageDraw.Draw(rgb)
+            _draw_text_box(draw, rgb, speaker, story_text, page, total)
+
+        rgb.save(output_path, "JPEG", quality=95)
+        print(f"[Composite] 第 {page} 頁完成：{output_path}")
+        return True
+    except Exception as e:
+        print(f"[Composite] 第 {page} 頁失敗：{e}")
+        return False
+
+
+def render_final(quote: str, output_path: str, total: int = 6) -> bool:
+    """最後一頁金句收尾：深色背景 + 大字"""
+    try:
+        canvas = Image.new("RGB", (CANVAS_W, CANVAS_H), (22, 30, 58))
+        draw = ImageDraw.Draw(canvas)
+
+        # 裝飾線
+        lc = (80, 110, 200)
+        draw.line([(80, 480), (CANVAS_W - 80, 480)], fill=lc, width=2)
+        draw.line([(80, CANVAS_H - 480), (CANVAS_W - 80, CANVAS_H - 480)], fill=lc, width=2)
+
+        # 金句（置中）
+        qf = _font(54, bold=True)
+        lines = _wrap(quote, qf, CANVAS_W - 160)
+        total_h = len(lines) * 76
+        y = (CANVAS_H - total_h) // 2
+        for line in lines:
+            lw = qf.getbbox(line)[2]
+            draw.text(((CANVAS_W - lw) // 2, y), line, font=qf, fill=(255, 255, 255))
+            y += 76
+
+        # 帳號 + 頁碼
+        af = _font(32)
+        draw.text((80, CANVAS_H - 100), "@工程師把拔", font=af, fill=(120, 150, 220))
+        pf = _font(30)
+        lp = f"{total}  /  {total}"
+        pw = pf.getbbox(lp)[2]
+        draw.text((CANVAS_W - 80 - pw, CANVAS_H - 100), lp, font=pf, fill=(120, 130, 160))
+
+        canvas.save(output_path, "JPEG", quality=95)
+        print(f"[Composite] 金句頁完成：{output_path}")
+        return True
+    except Exception as e:
+        print(f"[Composite] 金句頁失敗：{e}")
+        return False
+
+
+def validate_scenes(story: dict) -> dict:
+    """
+    把 story dict 裡的 background / mood 正規化到合法詞彙表。
+    非法值先查別名表，找不到則 fallback 到角色/場景預設值。
+    回傳修正後的 story（deepcopy，不修改原始 dict）。
+    """
+    import copy
+    story = copy.deepcopy(story)
+    for scene in story.get("scenes", []):
+        # ── background ──────────────────────────
+        bg = scene.get("background", "dining_room")
+        if bg not in VALID_BACKGROUNDS:
+            resolved = _BG_ALIAS.get(bg, "dining_room")
+            print(f"[Validate] background '{bg}' 非法 → {resolved}")
+            scene["background"] = resolved
+
+        # ── mood ────────────────────────────────
+        speaker = scene.get("speaker", "chris")
+        mood = scene.get("mood", "normal")
+        if speaker == "narrator":
+            scene["mood"] = "neutral"  # narrator 不載角色，mood 無意義
+            continue
+        valid_set = VALID_MOODS.get(speaker, {"normal"})
+        if mood not in valid_set:
+            alias_map = _MOOD_ALIAS.get(speaker, {})
+            resolved = alias_map.get(mood, next(iter(valid_set)))
+            print(f"[Validate] {speaker} mood '{mood}' 非法 → {resolved}")
+            scene["mood"] = resolved
+    return story
+
+
+def render_carousel(story: dict, output_dir: str) -> list[str]:
+    """
+    主入口：根據 Claude 輸出的 story dict 渲染完整輪播。
+    story 格式：
+    {
+      "story_title": "...",
+      "cover_background": "dining_room",
+      "quote": "...",
+      "scenes": [
+        {"page": 1, "speaker": "chris", "mood": "proud",
+         "story_text": "...", "background": "dining_room"},
+        ...
+      ]
+    }
+    回傳所有 slide 路徑。
+    """
+    story = validate_scenes(story)
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
+    scenes = story.get("scenes", [])
+    total = len(scenes) + 1  # 封面 + 對話頁
+    paths = []
+
+    # 封面
+    p = f"{output_dir}/slide_01.jpg"
+    if render_cover(story.get("cover_background", "dining_room"),
+                    story.get("story_title", ""), p, total):
+        paths.append(p)
+
+    # 對話頁
+    for scene in scenes:
+        page_num = scene["page"] + 1
+        p = f"{output_dir}/slide_{page_num:02d}.jpg"
+        if render_dialogue(
+            background=scene.get("background", "dining_room"),
+            speaker=scene["speaker"],
+            mood=scene["mood"],
+            story_text=scene["story_text"],
+            page=page_num,
+            total=total,
+            output_path=p,
+        ):
+            paths.append(p)
+
+    print(f"[Composite] 完成，共 {len(paths)} 頁：{output_dir}")
+    return paths

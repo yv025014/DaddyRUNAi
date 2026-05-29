@@ -1,0 +1,68 @@
+{
+  "story_title": "API 是什麼？",
+  "quote": "API 不是魔法，是系統之間照規矩傳話的櫃台。傳給那個一直聽不懂 API 的人。",
+  "format": "tech",
+  "tech_concept": "API",
+  "life_event": "餐廳點餐/傳話櫃台",
+  "scenes": [
+    {
+      "page": 1,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "API 是什麼？",
+      "background": "office_desk"
+    },
+    {
+      "page": 2,
+      "speaker": "anna",
+      "mood": "curious",
+      "story_text": "把拔，為什麼我不能直接去廚房拿布丁？",
+      "background": "dining_room"
+    },
+    {
+      "page": 3,
+      "speaker": "chris",
+      "mood": "proud",
+      "story_text": "因為餐廳有規矩。你要跟櫃台阿姨說，阿姨再跟廚房師傅說，才會有。",
+      "background": "dining_room"
+    },
+    {
+      "page": 4,
+      "speaker": "anna",
+      "mood": "smirk",
+      "story_text": "所以櫃台阿姨是幫我們傳話的人？",
+      "background": "dining_room"
+    },
+    {
+      "page": 5,
+      "speaker": "chris",
+      "mood": "normal",
+      "story_text": "對。API 就像系統之間的櫃台阿姨，負責照規矩傳話。",
+      "background": "office_desk"
+    },
+    {
+      "page": 6,
+      "speaker": "anna",
+      "mood": "smirk",
+      "story_text": "那我叫把拔問媽咪能不能吃餅乾，把拔也是櫃台阿姨嗎？",
+      "background": "dining_room"
+    },
+    {
+      "page": 7,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "API 不是魔法，是系統之間照規矩傳話的櫃台。傳給那個一直聽不懂 API 的人。",
+      "background": "office_desk"
+    }
+  ],
+  "caption": "Anna 的童言反殺真的太可愛了！🤯 把拔瞬間變家裡的 API 櫃台阿姨，哈哈哈。你還記得自己第一次聽懂 API 是什麼的時候嗎？當時是怎麼理解的呢？快留言跟把拔分享你的「啊哈！」時刻吧！",
+  "hashtags": [
+    "工程師把拔",
+    "工程師日常",
+    "親子日常",
+    "台灣工程師",
+    "科技爸爸",
+    "Anna語錄",
+    "技術白話"
+  ]
+}

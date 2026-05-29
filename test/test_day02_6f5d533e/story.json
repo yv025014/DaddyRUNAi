@@ -1,0 +1,61 @@
+{
+  "story_title": "把拔，櫃台也是API嗎？",
+  "quote": "API 就是系統間傳話的櫃台。Tag 那個 API 霧煞煞的朋友！",
+  "format": "tech",
+  "tech_concept": "API",
+  "life_event": "餐廳點餐",
+  "scenes": [
+    {
+      "page": 1,
+      "speaker": "anna",
+      "mood": "curious",
+      "story_text": "把拔，為什麼我不能直接去廚房拿蛋糕？",
+      "background": "dining_room"
+    },
+    {
+      "page": 2,
+      "speaker": "chris",
+      "mood": "proud",
+      "story_text": "因為餐廳有規則。你跟櫃台說，櫃台再去跟廚房說，才不會亂掉。",
+      "background": "dining_room"
+    },
+    {
+      "page": 3,
+      "speaker": "anna",
+      "mood": "smirk",
+      "story_text": "所以櫃台是幫我傳話的人？",
+      "background": "dining_room"
+    },
+    {
+      "page": 4,
+      "speaker": "chris",
+      "mood": "normal",
+      "story_text": "對。API 就像系統之間的櫃台，負責照規則傳話。",
+      "background": "office_desk"
+    },
+    {
+      "page": 5,
+      "speaker": "anna",
+      "mood": "smirk",
+      "story_text": "那我叫把拔問媽咪可不可以吃餅乾，把拔也是櫃台嗎？",
+      "background": "dining_room"
+    },
+    {
+      "page": 6,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "API 就是系統間傳話的櫃台。Tag 那個 API 霧煞煞的朋友！",
+      "background": "office_desk"
+    }
+  ],
+  "caption": "Anna 真的把 API 的概念理解得太透徹了！😂 她居然發現，爸爸在家裡扮演的角色，其實跟電腦系統裡的「櫃台」有異曲同工之妙。下次要吃餅乾，爸爸記得要照著「規則」傳話喔！😆 你的生活中有沒有類似「中間人」的經驗呢？第一次聽懂 API 是什麼時候？留言跟把拔分享一下吧！",
+  "hashtags": [
+    "工程師把拔",
+    "工程師日常",
+    "親子日常",
+    "台灣工程師",
+    "科技爸爸",
+    "Anna語錄",
+    "技術白話"
+  ]
+}

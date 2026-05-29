@@ -1,0 +1,61 @@
+{
+  "story_title": "把拔是 API 嗎？",
+  "quote": "API 就像系統傳話的服務生。傳給一直聽不懂 API 的人。",
+  "format": "tech",
+  "tech_concept": "API",
+  "life_event": "餐廳點餐與傳話",
+  "scenes": [
+    {
+      "page": 1,
+      "speaker": "anna",
+      "mood": "curious",
+      "story_text": "把拔，為什麼我不能自己跑進廚房拿蛋糕？",
+      "background": "dining_room"
+    },
+    {
+      "page": 2,
+      "speaker": "chris",
+      "mood": "proud",
+      "story_text": "因為廚房有規則。妳要先跟服務生點餐，他再幫妳進去拿出來。",
+      "background": "dining_room"
+    },
+    {
+      "page": 3,
+      "speaker": "anna",
+      "mood": "smirk",
+      "story_text": "所以服務生是幫我和廚房傳話的中間人？",
+      "background": "dining_room"
+    },
+    {
+      "page": 4,
+      "speaker": "chris",
+      "mood": "normal",
+      "story_text": "對。API 就像服務生，負責在系統之間照規則傳遞訊息。",
+      "background": "office_desk"
+    },
+    {
+      "page": 5,
+      "speaker": "anna",
+      "mood": "smirk",
+      "story_text": "那我想吃點心時把拔幫我問媽咪，把拔也是 API 嗎？",
+      "background": "dining_room"
+    },
+    {
+      "page": 6,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "API 就像系統傳話的服務生。傳給一直聽不懂 API 的人。",
+      "background": "office_desk"
+    }
+  ],
+  "caption": "Anna 竟然說我是她和媽咪之間的 API 傳話服務生！仔細想想還真沒錯，要是沒遵守媽咪的規則傳話，我可是會直接被系統拒絕存取的。大家第一次聽懂 API 是什麼時候呢？",
+  "hashtags": [
+    "工程師把拔",
+    "工程師日常",
+    "親子日常",
+    "台灣工程師",
+    "科技爸爸",
+    "Anna語錄",
+    "技術白話"
+  ]
+}

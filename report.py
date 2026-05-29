@@ -1,10 +1,9 @@
 """
 IG Autopilot — 每日數據報告腳本
 執行方式：python report.py
-Cron：0 9 * * * /usr/bin/python3 /Users/chris/Desktop/AI_IG_RUN/report.py
+Cron：0 9 * * * cd /Users/chris/Desktop/AI_IG_RUN && ./venv/bin/python report.py >> logs/report.log 2>&1
 """
 
-import os
 import json
 import datetime
 from pathlib import Path
@@ -13,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from services.ig_service import get_recent_posts, get_post_insights
-from services.claude_service import generate_report
+from services.llm_service import generate_report
 from services.notify_service import send_telegram
 
 BASE_DIR = Path(__file__).parent
@@ -42,54 +41,130 @@ def save_history(history: list):
         json.dump(history, f, ensure_ascii=False, indent=2)
 
 
+def build_posts_table(published_entries: list, insights_map: dict) -> str:
+    """產生 Markdown 表格：發文紀錄 + insights"""
+    header = "| 天 | 日期 | 主題 | 觸及 | 按讚 | 留言 | 儲存 | 分享 |"
+    sep    = "|---|------|------|------|------|------|------|------|"
+    rows = [header, sep]
+    for e in published_entries:
+        mid = e.get("media_id", "")
+        ins = insights_map.get(mid, {})
+        reach    = ins.get("reach",    "—")
+        likes    = ins.get("likes",    "—")
+        comments = ins.get("comments", "—")
+        saved    = ins.get("saved",    "—")
+        shares   = ins.get("shares",   "—")
+        rows.append(
+            f"| {e.get('day','?')} | {e.get('date','')} | {e.get('theme','')[:20]} "
+            f"| {reach} | {likes} | {comments} | {saved} | {shares} |"
+        )
+    return "\n".join(rows)
+
+
 def run():
     print("=" * 50)
     print(f"[Report] 數據報告腳本啟動 — {datetime.datetime.now()}")
     print("=" * 50)
 
-    recent_posts = get_recent_posts(limit=7)
-    if not recent_posts:
-        print("[Report] 無法取得貼文資料")
-        send_telegram("⚠️ 報告腳本：無法取得 IG 貼文資料")
-        return
-
-    log = load_log()
-    log_map = {entry.get("media_id"): entry for entry in log if entry.get("media_id")}
-
-    insights_data = {}
-    posts_data = []
-
-    for post in recent_posts:
-        media_id = post["id"]
-        insights = get_post_insights(media_id)
-        insights_data[media_id] = insights
-
-        log_entry = log_map.get(media_id, {})
-        posts_data.append({
-            "media_id": media_id,
-            "date": post.get("timestamp", "")[:10],
-            "theme": log_entry.get("theme", post.get("caption", "")[:30]),
-            "insights": insights,
-        })
-
-    history = load_history()
     today_str = datetime.date.today().isoformat()
+    log = load_log()
+    published = [e for e in log if e.get("status") == "published" and e.get("media_id")]
+
+    # 從 IG API 拉最近貼文 + insights
+    recent_posts = get_recent_posts(limit=10)
+    api_map = {p["id"]: p for p in recent_posts}
+
+    insights_map: dict = {}
+    for entry in published:
+        mid = entry["media_id"]
+        print(f"[Report] 抓取 insights：{mid} ({entry.get('theme','')[:20]})")
+        insights_map[mid] = get_post_insights(mid)
+
+    # 儲存歷史
+    history = load_history()
     history.append({
         "date": today_str,
-        "posts": posts_data,
+        "snapshot": [
+            {**e, "insights": insights_map.get(e["media_id"], {})}
+            for e in published
+        ],
     })
     save_history(history)
 
-    print("[Report] 呼叫 Claude 生成分析報告...")
-    report_text = generate_report(posts_data, insights_data)
+    # 組裝結構化數據
+    posts_table = build_posts_table(published, insights_map)
+
+    # 有無有效 insights
+    has_data = any(
+        bool(v) for v in insights_map.values()
+    )
+    data_note = "" if has_data else (
+        "\n> ⚠️ **注意**：Insights 數據目前為空，可能因為貼文發布不足 24 小時。"
+        "明日報告將顯示真實數字。\n"
+    )
+
+    # 前綴結構化區塊（不交給 LLM）
+    structured_block = f"""# 【工程師把拔】每日報告 — {today_str}
+
+## 發文總覽
+
+| 項目 | 數值 |
+|------|------|
+| 累計發文 | {len(published)} 篇 |
+| 今日新增 | {sum(1 for e in published if e.get('date') == today_str)} 篇 |
+| 計劃進度 | 第 {max((e.get('day',0) for e in published), default=0)} 天 / 30 天 |
+
+## 各篇成效數據
+{data_note}
+{posts_table}
+
+---
+"""
+
+    # LLM 分析（只傳最近 7 篇，控制 input token）
+    print("[Report] 呼叫 Gemini 生成分析...")
+    posts_for_llm = [
+        {
+            "day": e.get("day"),
+            "date": e.get("date"),
+            "theme": e.get("theme"),
+            "story_title": e.get("story_title"),
+            "insights": insights_map.get(e["media_id"], {}),
+        }
+        for e in published[-7:]
+    ]
+    recent_insights = {
+        e["media_id"]: insights_map[e["media_id"]]
+        for e in published[-7:]
+        if e["media_id"] in insights_map
+    }
+    analysis = generate_report(posts_for_llm, recent_insights)
+
+    report_text = structured_block + analysis
 
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     report_path = REPORTS_DIR / f"daily_report_{today_str}.md"
     report_path.write_text(report_text, encoding="utf-8")
     print(f"[Report] 報告已儲存：{report_path}")
 
-    summary = report_text[:500] + "\n\n📄 完整報告已存入本地"
-    send_telegram(f"📊 *{today_str} 數據報告*\n\n{summary}")
+    # Discord 通知：結構化摘要
+    stats_lines = []
+    for e in published[-3:]:  # 最近 3 篇
+        mid = e["media_id"]
+        ins = insights_map.get(mid, {})
+        reach = ins.get("reach", ins.get("impressions", "待更新"))
+        saved = ins.get("saved", "待更新")
+        stats_lines.append(
+            f"• Day{e.get('day','?')} {e.get('theme','')[:18]}｜觸及 {reach}｜儲存 {saved}"
+        )
+
+    notify_msg = (
+        f"📊 **{today_str} 每日報告**\n\n"
+        f"累計發文：{len(published)} 篇（進度 {max((e.get('day',0) for e in published), default=0)}/30）\n\n"
+        + "\n".join(stats_lines)
+        + "\n\n📄 完整報告已存入本地"
+    )
+    send_telegram(notify_msg)
 
     print("[Report] 完成！")
 

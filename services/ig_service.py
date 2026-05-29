@@ -72,14 +72,14 @@ def create_carousel_container(children_ids: list, caption: str) -> str | None:
 
 def post_carousel_to_instagram(image_urls: list, caption: str) -> str | None:
     """發布輪播貼文：建立子項目 → 建立輪播容器 → 等待 → 發布"""
-    # 1. 建立每張圖的子項目
+    # 1. 建立每張圖的子項目（每張間隔 3 秒，避免 API 過快）
     children_ids = []
     for i, url in enumerate(image_urls):
         print(f"[IG] 上傳第 {i+1}/{len(image_urls)} 張...")
         cid = create_carousel_item(url)
         if cid:
             children_ids.append(cid)
-        time.sleep(1)
+        time.sleep(3)
 
     if len(children_ids) < 2:
         print(f"[IG] 子項目不足（{len(children_ids)}），無法建立輪播")
@@ -134,9 +134,25 @@ def publish_media(container_id: str) -> str | None:
         media_id = data["id"]
         print(f"[IG] 發布成功！Media ID：{media_id}")
         return media_id
-    else:
-        print(f"[IG] 發布失敗：{data}")
-        return None
+
+    print(f"[IG] 發布失敗：{data}")
+
+    # IG 有時候後端已發布但回傳 rate limit 錯誤
+    # 等 5 秒後查最新貼文，確認是否已上線
+    print("[IG] 確認是否已靜默發布...")
+    time.sleep(5)
+    recent = get_recent_posts(limit=1)
+    if recent:
+        latest = recent[0]
+        # 若最新貼文是 5 分鐘內建立的，視為已發布
+        from datetime import datetime, timezone, timedelta
+        ts = datetime.fromisoformat(latest["timestamp"].replace("Z", "+00:00"))
+        if datetime.now(timezone.utc) - ts < timedelta(minutes=5):
+            media_id = latest["id"]
+            print(f"[IG] 偵測到靜默發布成功，Media ID：{media_id}")
+            return media_id
+
+    return None
 
 
 def post_to_instagram(image_url: str, caption: str) -> str | None:
@@ -154,17 +170,23 @@ def post_to_instagram(image_url: str, caption: str) -> str | None:
 def get_post_insights(media_id: str) -> dict:
     """取得貼文 Insights 數據"""
     _, token = _get_credentials()
-    url = f"{BASE_URL}/{media_id}/insights"
-    params = {
-        "metric": "impressions,reach,likes,comments,saves,shares",
-        "access_token": token,
-    }
-    resp = requests.get(url, params=params, timeout=10)
+    metrics = "reach,likes,comments,saved,shares,total_interactions"
+    resp = requests.get(
+        f"{BASE_URL}/{media_id}/insights",
+        params={"metric": metrics, "access_token": token},
+        timeout=10,
+    )
     data = resp.json()
+
+    if "error" in data:
+        print(f"[IG] Insights 錯誤 {media_id}：{data['error'].get('message')}")
+        return {}
 
     insights = {}
     for item in data.get("data", []):
-        insights[item["name"]] = item["values"][0]["value"] if item.get("values") else 0
+        # API 回傳格式：{"values": [{"value": 4}]}，不是直接 "value": 4
+        values = item.get("values", [])
+        insights[item["name"]] = values[0].get("value", 0) if values else 0
 
     return insights
 
