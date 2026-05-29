@@ -1,0 +1,67 @@
+{
+  "story_title": "家裡有工程師｜睡前問題分析半小時",
+  "quote": "傳給那個把睡前故事變成架構分析，結果自己先睡著的工程師把拔。",
+  "format": "home_meme",
+  "tech_concept": "遞迴",
+  "life_event": "小孩睡前問問題",
+  "scenes": [
+    {
+      "page": 1,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "家裡有工程師，睡前問題不能亂問。",
+      "background": "bedroom"
+    },
+    {
+      "page": 2,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "他會先將問題拆解成假說。",
+      "background": "bedroom"
+    },
+    {
+      "page": 3,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "再從基礎定義往下推演。",
+      "background": "bedroom"
+    },
+    {
+      "page": 4,
+      "speaker": "chris",
+      "mood": "proud",
+      "story_text": "這叫遞迴。問題不是單獨存在的，它跟前提、邊界條件、終止條件都有關係。",
+      "background": "office_desk"
+    },
+    {
+      "page": 5,
+      "speaker": "mom",
+      "mood": "deadpan",
+      "story_text": "我是不懂遞迴啦。但我知道你分析到一半，自己先睡著了。",
+      "background": "dining_room"
+    },
+    {
+      "page": 6,
+      "speaker": "chris",
+      "mood": "normal",
+      "story_text": "把拔默默將手機螢幕關閉，復原到睡覺版本。",
+      "background": "bedroom"
+    },
+    {
+      "page": 7,
+      "speaker": "chris",
+      "mood": "normal",
+      "story_text": "傳給那個把睡前故事變成架構分析，結果自己先睡著的工程師把拔。",
+      "background": "living_room"
+    }
+  ],
+  "caption": "Anna 睡前一個問題，居然觸發把拔的深度分析模式！😂 從假說到定義，一步步推演，連媽咪都搞不懂這是什麼新課程。結果咧？把拔分析到一半，自己倒是先進入夢鄉了。是不是很像你家那一位呢？留言分享你家工程師把拔的奇葩睡前故事吧！",
+  "hashtags": [
+    "工程師把拔",
+    "工程師日常",
+    "親子日常",
+    "台灣工程師",
+    "科技爸爸",
+    "Anna語錄"
+  ]
+}

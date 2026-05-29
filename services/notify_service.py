@@ -3,24 +3,22 @@ import requests
 
 
 def send_telegram(message: str) -> bool:
-    """發送 Telegram 通知"""
-    token = os.getenv("TELEGRAM_BOT_TOKEN")
-    chat_id = os.getenv("TELEGRAM_CHAT_ID")
+    """發送 Discord 通知（函式名保留相容性）"""
+    webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
 
-    if not token or not chat_id:
-        print("[Notify] Telegram 未設定，跳過通知")
+    if not webhook_url:
+        print("[Notify] DISCORD_WEBHOOK_URL 未設定，跳過通知")
         return False
 
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    payload = {
-        "chat_id": chat_id,
-        "text": message,
-        "parse_mode": "Markdown",
-    }
-    resp = requests.post(url, json=payload, timeout=10)
-    if resp.status_code == 200:
-        print("[Notify] Telegram 通知已發送")
+    # Markdown 轉換：*text* → **text**（Discord 用雙星號粗體）
+    content = message.replace("*", "**")
+
+    payload = {"content": content}
+    resp = requests.post(webhook_url, json=payload, timeout=10)
+
+    if resp.status_code in (200, 204):
+        print("[Notify] Discord 通知已發送")
         return True
     else:
-        print(f"[Notify] Telegram 發送失敗：{resp.text}")
+        print(f"[Notify] Discord 發送失敗：{resp.text}")
         return False

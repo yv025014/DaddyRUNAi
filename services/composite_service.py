@@ -10,6 +10,48 @@ BASE_DIR = Path(__file__).parent.parent
 CHAR_DIR = BASE_DIR / "assets" / "characters"
 BG_DIR = BASE_DIR / "assets" / "backgrounds"
 
+# ── 資產詞彙表（與 assets/ 目錄同步） ──────────────────────────
+VALID_BACKGROUNDS = {
+    "bedroom", "car_interior", "convenience_store", "dining_room",
+    "living_room", "office_desk", "outdoor_park", "science_park_lobby",
+    "supermarket",
+}
+
+VALID_MOODS = {
+    "anna":  {"curious", "happy", "pointing", "proud", "smirk"},
+    "chris": {"confused", "defeated", "embarrassed", "normal", "proud", "surprised", "thinking"},
+    "mom":   {"deadpan", "facepalm", "proud", "skeptical", "smiling"},
+}
+
+# LLM 可能生成的替代名 → 最近資產
+_BG_ALIAS: dict[str, str] = {
+    "park": "outdoor_park", "outdoor": "outdoor_park", "garden": "outdoor_park",
+    "office": "office_desk", "desk": "office_desk", "work": "office_desk",
+    "kitchen": "dining_room", "table": "dining_room", "restaurant": "dining_room",
+    "living": "living_room", "sofa": "living_room", "couch": "living_room",
+    "bed": "bedroom", "sleep": "bedroom",
+    "car": "car_interior", "drive": "car_interior", "commute": "car_interior",
+    "store": "convenience_store", "shop": "convenience_store",
+    "lobby": "science_park_lobby", "company": "science_park_lobby",
+}
+
+_MOOD_ALIAS: dict[str, dict[str, str]] = {
+    "anna": {
+        "neutral": "curious", "normal": "curious", "excited": "happy",
+        "smiling": "happy", "smile": "happy", "confused": "curious",
+        "thinking": "curious", "pointing_at": "pointing",
+    },
+    "chris": {
+        "sad": "defeated", "happy": "normal", "neutral": "normal",
+        "smile": "normal", "smiling": "normal", "excited": "proud",
+        "worried": "thinking", "thoughtful": "thinking",
+    },
+    "mom": {
+        "neutral": "deadpan", "normal": "smiling", "happy": "smiling",
+        "confused": "skeptical", "disappointed": "facepalm", "sigh": "facepalm",
+    },
+}
+
 CANVAS_W, CANVAS_H = 1080, 1350
 
 FONT_PATH = "/System/Library/AssetsV2/com_apple_MobileAsset_Font7/3419f2a427639ad8c8e139149a287865a90fa17e.asset/AssetData/PingFang.ttc"
@@ -19,11 +61,13 @@ SPEAKER_COLORS = {
     "chris": (52, 120, 246),
     "anna":  (229, 77, 114),
     "mom":   (56, 161, 105),
+    "narrator": (80, 80, 80),
 }
 SPEAKER_LABELS = {
     "chris": "Chris 把拔",
     "anna":  "Anna",
     "mom":   "媽咪",
+    "narrator": "",
 }
 
 
@@ -56,7 +100,10 @@ def _load_bg(name: str) -> Image.Image:
             img = img.resize((nw, nh), Image.LANCZOS)
             l, t = (nw - CANVAS_W) // 2, (nh - CANVAS_H) // 2
             return img.crop((l, t, l + CANVAS_W, t + CANVAS_H))
-    raise FileNotFoundError(f"找不到背景：{name}")
+    if name != "dining_room":
+        print(f"[Composite] 找不到背景 '{name}'，fallback → dining_room")
+        return _load_bg("dining_room")
+    raise FileNotFoundError("找不到預設背景 dining_room，請確認資產完整")
 
 
 def _remove_bg(img: Image.Image) -> Image.Image:
@@ -198,27 +245,66 @@ def render_cover(background: str, title: str,
         return False
 
 
+def _draw_narrator_box(draw: ImageDraw.ImageDraw, canvas: Image.Image,
+                        text: str, page: int, total: int):
+    """旁白頁：無角色，大字置中偏下，quote card 風格"""
+    box_h    = 320
+    box_top  = CANVAS_H // 2 + 80
+    box_margin = 48
+
+    # 半透明白色圓角框
+    overlay = Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 0))
+    od = ImageDraw.Draw(overlay)
+    od.rounded_rectangle(
+        [(box_margin, box_top), (CANVAS_W - box_margin, box_top + box_h)],
+        radius=28,
+        fill=(255, 255, 255, 230),
+    )
+    canvas.paste(Image.alpha_composite(
+        Image.new("RGBA", canvas.size, (0, 0, 0, 0)), overlay
+    ).convert("RGB"), mask=overlay.split()[3])
+
+    # 大字水平置中
+    tf = _font(60, bold=True)
+    lines = _wrap(text, tf, CANVAS_W - box_margin * 2 - 80)
+    line_h = 78
+    total_text_h = len(lines) * line_h
+    y = box_top + (box_h - total_text_h) // 2
+    for line in lines[:3]:
+        lw = tf.getbbox(line)[2]
+        draw.text(((CANVAS_W - lw) // 2, y), line, font=tf, fill=(28, 28, 28))
+        y += line_h
+
+    # 頁碼右下角
+    pf = _font(30)
+    label_p = f"{page}  /  {total}"
+    pw = pf.getbbox(label_p)[2]
+    draw.text((CANVAS_W - box_margin - pw - 20, box_top + box_h - 44),
+              label_p, font=pf, fill=(160, 160, 160))
+
+
 def render_dialogue(background: str, speaker: str, mood: str,
                     story_text: str, page: int, total: int,
                     output_path: str) -> bool:
-    """第 2-5 頁對話頁：背景 + 角色立繪 + 文字框"""
+    """對話頁：背景 + 角色立繪 + 文字框（narrator speaker 則只有背景 + 大字）"""
     try:
         canvas = _load_bg(background).convert("RGBA")
 
-        # 角色立繪
-        char = _load_char(speaker, mood, height=780)
-        if char:
-            char_y = CANVAS_H - 370 - char.height + 40
-            if speaker == "anna":
-                char_x = CANVAS_W - char.width - 10
-            else:
-                char_x = 10
-            canvas.alpha_composite(char, dest=(char_x, max(0, char_y)))
-
-        # 文字框
-        rgb = canvas.convert("RGB")
-        draw = ImageDraw.Draw(rgb)
-        _draw_text_box(draw, rgb, speaker, story_text, page, total)
+        if speaker == "narrator":
+            # 旁白頁：全幅背景 + 置中大字，無角色
+            rgb = canvas.convert("RGB")
+            draw = ImageDraw.Draw(rgb)
+            _draw_narrator_box(draw, rgb, story_text, page, total)
+        else:
+            # 一般對話頁：角色立繪 + 底部文字框
+            char = _load_char(speaker, mood, height=780)
+            if char:
+                char_y = CANVAS_H - 370 - char.height + 40
+                char_x = CANVAS_W - char.width - 10 if speaker == "anna" else 10
+                canvas.alpha_composite(char, dest=(char_x, max(0, char_y)))
+            rgb = canvas.convert("RGB")
+            draw = ImageDraw.Draw(rgb)
+            _draw_text_box(draw, rgb, speaker, story_text, page, total)
 
         rgb.save(output_path, "JPEG", quality=95)
         print(f"[Composite] 第 {page} 頁完成：{output_path}")
@@ -265,6 +351,37 @@ def render_final(quote: str, output_path: str, total: int = 6) -> bool:
         return False
 
 
+def validate_scenes(story: dict) -> dict:
+    """
+    把 story dict 裡的 background / mood 正規化到合法詞彙表。
+    非法值先查別名表，找不到則 fallback 到角色/場景預設值。
+    回傳修正後的 story（deepcopy，不修改原始 dict）。
+    """
+    import copy
+    story = copy.deepcopy(story)
+    for scene in story.get("scenes", []):
+        # ── background ──────────────────────────
+        bg = scene.get("background", "dining_room")
+        if bg not in VALID_BACKGROUNDS:
+            resolved = _BG_ALIAS.get(bg, "dining_room")
+            print(f"[Validate] background '{bg}' 非法 → {resolved}")
+            scene["background"] = resolved
+
+        # ── mood ────────────────────────────────
+        speaker = scene.get("speaker", "chris")
+        mood = scene.get("mood", "normal")
+        if speaker == "narrator":
+            scene["mood"] = "neutral"  # narrator 不載角色，mood 無意義
+            continue
+        valid_set = VALID_MOODS.get(speaker, {"normal"})
+        if mood not in valid_set:
+            alias_map = _MOOD_ALIAS.get(speaker, {})
+            resolved = alias_map.get(mood, next(iter(valid_set)))
+            print(f"[Validate] {speaker} mood '{mood}' 非法 → {resolved}")
+            scene["mood"] = resolved
+    return story
+
+
 def render_carousel(story: dict, output_dir: str) -> list[str]:
     """
     主入口：根據 Claude 輸出的 story dict 渲染完整輪播。
@@ -281,9 +398,10 @@ def render_carousel(story: dict, output_dir: str) -> list[str]:
     }
     回傳所有 slide 路徑。
     """
+    story = validate_scenes(story)
     Path(output_dir).mkdir(parents=True, exist_ok=True)
     scenes = story.get("scenes", [])
-    total = len(scenes) + 2  # 封面 + 對話頁 + 金句頁
+    total = len(scenes) + 1  # 封面 + 對話頁
     paths = []
 
     # 封面
@@ -306,12 +424,6 @@ def render_carousel(story: dict, output_dir: str) -> list[str]:
             output_path=p,
         ):
             paths.append(p)
-
-    # 金句頁
-    quote = story.get("quote", scenes[-1]["story_text"] if scenes else "")
-    p = f"{output_dir}/slide_{total:02d}.jpg"
-    if render_final(quote, p, total):
-        paths.append(p)
 
     print(f"[Composite] 完成，共 {len(paths)} 頁：{output_dir}")
     return paths

@@ -1,0 +1,67 @@
+{
+  "story_title": "把拔的 SuperUser 權限挑戰",
+  "quote": "傳給那個自稱Admin，其實權限最低的工程師。",
+  "format": "home_meme",
+  "tech_concept": "SuperUser",
+  "life_event": "搶電視遙控器",
+  "scenes": [
+    {
+      "page": 1,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "家裡有工程師，權限不能亂設定。",
+      "background": "living_room"
+    },
+    {
+      "page": 2,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "他會先設定電視盒的密碼。",
+      "background": "living_room"
+    },
+    {
+      "page": 3,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "再自稱是唯一管理者。",
+      "background": "living_room"
+    },
+    {
+      "page": 4,
+      "speaker": "chris",
+      "mood": "proud",
+      "story_text": "這叫SuperUser。權限不是單獨的，它跟系統穩定、操作習慣有關。",
+      "background": "living_room"
+    },
+    {
+      "page": 5,
+      "speaker": "mom",
+      "mood": "deadpan",
+      "story_text": "我是不懂管理員啦。但我知道遙控器是我的。",
+      "background": "living_room"
+    },
+    {
+      "page": 6,
+      "speaker": "chris",
+      "mood": "normal",
+      "story_text": "把拔默默把密碼恢復到昨天版本。",
+      "background": "living_room"
+    },
+    {
+      "page": 7,
+      "speaker": "chris",
+      "mood": "normal",
+      "story_text": "傳給那個自稱Admin，其實權限最低的工程師。",
+      "background": "living_room"
+    }
+  ],
+  "caption": "把拔在外面是掌管伺服器生死的大神，回到家想當個 Admin 不過分吧？結果媽咪一拿起遙控器，直接實體降維打擊。你家也有這種自以為很有權限的工程師嗎？快 tag 他來看！",
+  "hashtags": [
+    "工程師把拔",
+    "工程師日常",
+    "親子日常",
+    "台灣工程師",
+    "科技爸爸",
+    "Anna語錄"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "story_title": "最不懂流程的人負責優化流程",
+  "quote": "流程沒變快，脾氣先變好。轉給開會開到懷疑人生的同事。",
+  "format": "office",
+  "tech_concept": "流程優化與專案管理",
+  "life_event": "最不懂流程的人負責主導流程優化會議",
+  "scenes": [
+    {
+      "page": 1,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "最不跑流程的人，負責優化流程。",
+      "background": "science_park_lobby"
+    },
+    {
+      "page": 2,
+      "speaker": "chris",
+      "mood": "confused",
+      "story_text": "今天去開流程重整會，主席一開口就問：平時這個單子要找誰簽？",
+      "background": "office_desk"
+    },
+    {
+      "page": 3,
+      "speaker": "chris",
+      "mood": "confused",
+      "story_text": "開了兩小時，我們才發現，他這輩子從來沒有自己送過這張單。",
+      "background": "office_desk"
+    },
+    {
+      "page": 4,
+      "speaker": "anna",
+      "mood": "curious",
+      "story_text": "把拔，他沒走過那條路，怎麼知道哪裡會摔跤？",
+      "background": "dining_room"
+    },
+    {
+      "page": 5,
+      "speaker": "chris",
+      "mood": "thinking",
+      "story_text": "這在公司叫宏觀盤點。他不用自己去走，只要把走過的人聚在一起對齊。",
+      "background": "dining_room"
+    },
+    {
+      "page": 6,
+      "speaker": "mom",
+      "mood": "deadpan",
+      "story_text": "這不就是找個路癡，來幫大家規劃逃生路線。",
+      "background": "dining_room"
+    },
+    {
+      "page": 7,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "流程沒變快，脾氣先變好。轉給開會開到懷疑人生的同事。",
+      "background": "office_desk"
+    }
+  ],
+  "caption": "你公司也有這種「沒下過田卻來指導怎麼種田」的長官嗎？開個流程優化會議，結果都在幫主持人做職前訓練。你們公司最荒謬的優化會議是什麼？留言跟我分享！",
+  "hashtags": [
+    "工程師把拔",
+    "工程師日常",
+    "職場鬼故事",
+    "台灣上班族",
+    "社畜日常",
+    "大人的世界"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "story_title": "家裡有工程師，睡前問題不能亂問",
+  "quote": "傳給那個把睡前問題分析到睡著的工程師把拔。",
+  "format": "home_meme",
+  "tech_concept": "遞迴",
+  "life_event": "Anna睡前問問題",
+  "scenes": [
+    {
+      "page": 1,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "家裡有工程師，睡前問題不能亂問。",
+      "background": "bedroom"
+    },
+    {
+      "page": 2,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "他會先列出所有已知。",
+      "background": "bedroom"
+    },
+    {
+      "page": 3,
+      "speaker": "narrator",
+      "mood": "neutral",
+      "story_text": "再從最根本探究。",
+      "background": "bedroom"
+    },
+    {
+      "page": 4,
+      "speaker": "chris",
+      "mood": "proud",
+      "story_text": "這叫遞迴。問題不是單獨存在的，它跟前提假設、邊界條件、終止條件都有關係。",
+      "background": "bedroom"
+    },
+    {
+      "page": 5,
+      "speaker": "mom",
+      "mood": "deadpan",
+      "story_text": "我是不懂遞迴啦。但我知道你先睡著了。",
+      "background": "bedroom"
+    },
+    {
+      "page": 6,
+      "speaker": "chris",
+      "mood": "normal",
+      "story_text": "把拔默默關閉手機，復原到睡覺版本。",
+      "background": "bedroom"
+    },
+    {
+      "page": 7,
+      "speaker": "chris",
+      "mood": "normal",
+      "story_text": "傳給那個把睡前問題分析到睡著的工程師把拔。",
+      "background": "living_room"
+    }
+  ],
+  "caption": "工程師把拔的睡前儀式，就是要把簡單的問題複雜化🤣。Anna 只是隨口問了句「爸爸，月亮為什麼會跟著我們走？」，結果觸發了Chris把拔的深度分析模式，從天文學原理、地球自轉公轉、到觀測者視角，一路講到連他自己都累到睡著。媽咪表示：我是不懂那些理論啦，但我知道我的老公成功把自己催眠了。你家也有這種把睡前故事變成技術討論會的把拔嗎？趕快Tag他來看看！🌙",
+  "hashtags": [
+    "工程師把拔",
+    "工程師日常",
+    "親子日常",
+    "台灣工程師",
+    "科技爸爸",
+    "Anna語錄"
+  ]
+}
