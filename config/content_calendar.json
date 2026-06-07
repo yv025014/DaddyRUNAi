@@ -331,6 +331,46 @@
       "theme": "第二季第一天：Anna說把拔又開始研究新東西了",
       "cover_background": "living_room",
       "script_hint": "P1：「家裡有工程師，第二季：設備不能亂買。」第二季正式開場 / P2：「他會先說這次要升級設備，讓錄製效率提升30%。」 / P3：「再列出一份採購清單，說這是最小可行性配置。」 / P4：「這叫最小可行產品（MVP）。設備不是單獨存在的，它跟工作流程、產出品質、投資報酬率都有關係。」 / P5：「我是不懂MVP啦。但我知道你的『最小配置』，比我的化妝台貴。」 / P6：把拔默默把採購清單預算欄位縮減50% / P7：Tag那個說要買MVP設備、清單越寫越長的工程師"
+    },
+    {
+      "day": 38,
+      "type": "home_meme",
+      "pillar": "home_meme",
+      "theme": "鍵盤敲擊聲太大被嫌棄，Anna：把拔在敲摩斯密碼嗎",
+      "cover_background": "office_desk",
+      "script_hint": "[AI建議] 強化生活反差感"
+    },
+    {
+      "day": 39,
+      "type": "workplace",
+      "pillar": "workplace",
+      "theme": "PM說這功能很簡單，實際上是個SQL死亡迴圈",
+      "cover_background": "office_desk",
+      "script_hint": "[AI建議] 工程師共鳴度極高"
+    },
+    {
+      "day": 40,
+      "type": "tech",
+      "pillar": "tech",
+      "theme": "解釋什麼是Cookie，Anna：是吃完會掉屑屑的那種嗎",
+      "cover_background": "office_desk",
+      "script_hint": "[AI建議] 趣味化技術知識"
+    },
+    {
+      "day": 41,
+      "type": "carousel",
+      "pillar": "office",
+      "theme": "那些在會議上說「我沒意見」的人，最後意見最多",
+      "cover_background": "office_desk",
+      "script_hint": "[AI建議] 職場黑色幽默"
+    },
+    {
+      "day": 42,
+      "type": "home_meme",
+      "pillar": "home_meme",
+      "theme": "家裡有工程師，備份不能亂刪，媽咪：刪了你也是備份",
+      "cover_background": "office_desk",
+      "script_hint": "[AI建議] 媽咪補刀破圈"
     }
   ]
 }
