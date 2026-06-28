@@ -467,6 +467,46 @@
       "theme": "把拔解釋版本控制，Anna：那你可以 Ctrl+Z 你說過的話嗎",
       "cover_background": "living_room",
       "script_hint": "P1方向：Anna 問把拔在電腦上做什麼，把拔說在做版本控制 / P2方向：Anna 問：什麼是版本控制？它是一種機器嗎？ / P3方向：Chris 費曼解釋：就像你的畫，每次改完都拍一張照片存起來，以後畫壞了可以回到任何一個舊版本，Ctrl+Z 但是永遠不會消失的那種 / P4方向：Anna 追問：那你可以 Ctrl+Z 你說的「Anna 今天可以不睡午覺」嗎？ / P5方向：Chris 做出痛苦的表情：git blame 顯示那行是我說的，commit 時間下午兩點十分，author: chris / P6方向：媽咪在旁邊說：我是不懂 git blame 啦，但我知道那個 commit 已經 merge 進 production 了，Anna 聽到了 / P7方向：收藏金句「有些 commit 不能 revert，比如你親口答應孩子的那句話」"
+    },
+    {
+      "day": 53,
+      "type": "carousel",
+      "pillar": "workplace",
+      "theme": "需求改完隔天，客戶說：我想了一下，還是原本的比較好",
+      "cover_background": "office_desk",
+      "script_hint": "P1方向：迷因標題「IT職場鬼故事：需求確認、評估、開發、測試、上線，然後——」/ P2方向：旁白敘述：花了三週把功能從A改成B，所有測試過，上線前一天 / P3方向：旁白升級：客戶Line傳來：「其實我想了一下，A比較符合我們的使用習慣，可以改回去嗎？謝謝」/ P4方向：Chris困惑表情：我的PR有21個commit，diff有680行，Code review花了兩天 / P5方向：Chris工程師視角：這不叫需求變更，這叫做：把人力資源誤認為可無限 rollback 的 git repo / P6方向：Chris浮誇崩潰：我現在知道為什麼工程師喝那麼多咖啡了，因為靈魂要撐住肉體繼續改 / P7方向：Tag 那個接過「可以改回去嗎」需求的工程師，你們不孤單"
+    },
+    {
+      "day": 54,
+      "type": "carousel",
+      "pillar": "home_meme",
+      "theme": "家裡有工程師，IKEA 家具不能隨便組",
+      "cover_background": "living_room",
+      "script_hint": "P1方向：「家裡有工程師，IKEA 家具不能隨便組。」迷因標題 / P2方向：Anna 旁白第一個觀察：把拔拿到組裝說明書，第一件事是看圖的版本號，然後說：好，先確認說明書是最新版本 / P3方向：Anna 旁白第二個觀察：螺絲全部倒出來之後，把拔把每個零件「依類別」排成三行，拍了一張照存進資料夾叫「KALLAX_v1.0_pre-install」 / P4方向：Chris 技術邏輯解釋：組裝是一個有依賴順序的流程，你不能在底板完成前裝側板，這就是 dependency graph，跳步驟會導致整個 build 失敗 / P5方向：媽咪補刀：我是不懂 dependency 啦，但我知道你說的「快速」是從 10:30 組到現在快 14:00，Anna 午覺都醒來了 / P6方向：Chris 默默把螺絲起子放下，打開 IKEA 官網聯絡到府組裝服務——有時候最優的解法是外包 / P7方向：Tag 那個組 IKEA 前先看說明書版本號的工程師"
+    },
+    {
+      "day": 55,
+      "type": "carousel",
+      "pillar": "office",
+      "theme": "開完三小時會議，結論是：下週同樣時間再開一次",
+      "cover_background": "science_park_lobby",
+      "script_hint": "P1方向：荒謬職場標題：「三小時 × 八個人 × 每人時薪 1200 = 這個結論值二萬八千八百元」 / P2方向：Chris 描述事件：週一下午，召集八個人，跨部門對齊季度目標 / P3方向：Chris 補充荒謬後續：前兩小時整理上個月的問題，第三小時確認下個月誰負責 / P4方向：Anna 小孩邏輯：「那你們這次到底決定了什麼？」 / P5方向：Chris 用大人話合理化：我們確認了一件事，就是這些問題需要更多資料才能決定，所以下週要再開一次 / P6方向：媽咪白話揭示真相：我是不懂對齊啦，但我知道我跟鄰居討論要不要一起團購，LINE 傳三句話就搞定了 / P7方向：黑色幽默金句「傳給那個剛開完三小時結論是：再開一次的同事，你不孤單」"
+    },
+    {
+      "day": 56,
+      "type": "carousel",
+      "pillar": "home_meme",
+      "theme": "家裡有工程師，假日行程不能臨時改",
+      "cover_background": "dining_room",
+      "script_hint": "P1方向：「家裡有工程師，假日行程不能臨時改。」迷因標題 / P2方向：Anna 旁白第一個觀察：出門前三天，把拔就把行程排好，存進 Google Calendar，每個事件都有提醒和備註 / P3方向：Anna 旁白第二個觀察：媽咪說要改去另一個地方，把拔臉上出現我只在 production 緊急事故看過的那個表情 / P4方向：Chris 技術邏輯解釋：這不是我不想去，這是整個行程是一個有狀態的 state machine，你在中途 inject 一個新事件，前面的 state 全部要重新評估，停車、餐廳訂位、Anna 的午睡視窗全部要重算 / P5方向：媽咪補刀：我是不懂 state machine 啦，但我知道你說的重算，就是你把手機拿出來看了四分鐘 Calendar，然後說「好，可以，改了」/ P6方向：Chris 默默更新 Calendar 事件，標記原訂計畫為 deprecated，新行程標記 v2.0 / P7方向：Tag 那個行程被臨時改之後需要重新計算整個 state 的工程師"
+    },
+    {
+      "day": 57,
+      "type": "carousel",
+      "pillar": "tech",
+      "theme": "把拔解釋 API 是什麼，Anna：那把拔是媽咪的 API 嗎",
+      "cover_background": "office_desk",
+      "script_hint": "P1方向：Anna 問把拔在電腦上呼叫的那個是什麼，把拔說是 API / P2方向：Anna 問：API 是什麼？它是一種遙控器嗎？ / P3方向：Chris 費曼解釋：API 就像是餐廳的服務生。你不用進廚房自己煮，你只要告訴服務生你要點什麼，服務生就把結果端給你，你不需要知道廚房裡是怎麼煮的 / P4方向：Anna 追問：那媽咪是不是把拔的 API？把拔說「我要吃什麼」，媽咪就端出來？ / P5方向：Chris 停頓：...技術上來說，這個比喻的架構是正確的 / P6方向：媽咪在旁邊放下筷子：我是不懂 API 啦，但我知道這個服務生的 endpoint 叫做「自己去冰箱看」/ P7方向：收藏金句「API 讓你不需要知道背後怎麼實作，但你得尊重它的 rate limit」"
     }
   ]
 }
