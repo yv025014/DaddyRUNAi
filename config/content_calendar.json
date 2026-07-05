@@ -507,6 +507,110 @@
       "theme": "把拔解釋 API 是什麼，Anna：那把拔是媽咪的 API 嗎",
       "cover_background": "office_desk",
       "script_hint": "P1方向：Anna 問把拔在電腦上呼叫的那個是什麼，把拔說是 API / P2方向：Anna 問：API 是什麼？它是一種遙控器嗎？ / P3方向：Chris 費曼解釋：API 就像是餐廳的服務生。你不用進廚房自己煮，你只要告訴服務生你要點什麼，服務生就把結果端給你，你不需要知道廚房裡是怎麼煮的 / P4方向：Anna 追問：那媽咪是不是把拔的 API？把拔說「我要吃什麼」，媽咪就端出來？ / P5方向：Chris 停頓：...技術上來說，這個比喻的架構是正確的 / P6方向：媽咪在旁邊放下筷子：我是不懂 API 啦，但我知道這個服務生的 endpoint 叫做「自己去冰箱看」/ P7方向：收藏金句「API 讓你不需要知道背後怎麼實作，但你得尊重它的 rate limit」"
+    },
+    {
+      "day": 58,
+      "type": "carousel",
+      "pillar": "workplace",
+      "theme": "客戶說「你參考一下競品就好了」，原來是叫工程師完整複製一遍",
+      "cover_background": "office_desk",
+      "script_hint": "迷因標題：「參考一下」== 照抄一遍，只是不能說 / P1旁白：需求評估階段，客戶傳來一張競品截圖說「你參考一下就好，我們做個類似的」 / P2旁白：Chris 估工時，心想「參考」大概三天夠了 / P3旁白荒謬升級：客戶回覆「對，對，就是這樣，動畫也要一樣，連那個小按鈕的hover效果也要」 / P4 Chris困惑：參考的定義好像跟我學的不一樣 / P5 Chris工程師視角抱怨：原來「參考」是一個動詞，意思是「不觸碰智慧財產但功能要一模一樣」 / P6 Chris浮誇崩潰：我的工時估算裡沒有「反向工程競品」這個 story point / P7 Tag金句：「Tag 那個聽過『就參考一下』然後複製了三個月的工程師，你不孤單」"
+    },
+    {
+      "day": 59,
+      "type": "carousel",
+      "pillar": "home_meme",
+      "theme": "家裡有工程師，買電器前要先研究規格表",
+      "cover_background": "living_room",
+      "script_hint": "迷因標題：家裡有工程師，買東西不能只看「好不好看」 / P1 Anna旁白觀察：媽咪說冷氣壞了要買新的，把拔打開電腦查了兩個小時規格表 / P2 Anna旁白觀察：把拔說：這台能效比不夠、那台噪音值超標、還有一台安裝費用含在售價裡很可疑 / P3 Chris技術邏輯解釋：買電器就是買系統，你要先確認需求規格、效能指標、維護成本，否則你買的不是產品，你買的是未來的債 / P4 媽咪生活現實補刀：我是不懂規格啦，但我知道賣場阿姨說這台最好賣 / P5 Chris默默rollback：……購物車裡的那三個分頁標籤，我先關掉 / P6 Tag金句：「Tag 那個買東西前會先問『有沒有技術文件』的工程師，你在哪裡」"
+    },
+    {
+      "day": 60,
+      "type": "carousel",
+      "pillar": "office",
+      "theme": "主管說「你 feel 一下就好」，工程師找不到 feel 的 API",
+      "cover_background": "office_desk",
+      "script_hint": "荒謬職場標題：「Feel 一下」是哪個 SDK 的函式？ / P1 Chris描述事件：主管說這個需求不用寫規格，你 feel 一下用戶要什麼就好 / P2 Chris補充荒謬後續：Chris問：feel 之後需要文件嗎？主管說：不用，你 feel 到什麼就做什麼 / P3 Anna小孩邏輯發問：把拔，feel 是什麼意思？是感覺嗎？感覺可以寫成程式嗎？ / P4 Chris用大人話合理化：feel 是一種非同步的需求收集方式，只是回傳值格式不明確 / P5 媽咪生活比喻揭示真相：我是不懂 feel 啦，但我知道你 feel 錯了就要重做 / P6 黑色幽默金句：「工程師最怕的不是困難的需求，是沒有需求卻要你 feel 出來的需求」"
+    },
+    {
+      "day": 61,
+      "type": "carousel",
+      "pillar": "tech",
+      "theme": "把拔解釋 Cache 是什麼，Anna：那把拔記住媽咪生日是 cache 還是 RAM？",
+      "cover_background": "dining_room",
+      "script_hint": "技術概念：Cache（快取）/ P1 Anna生活疑問：把拔說電腦有 cache，那 cache 是什麼？是一種零食嗎？ / P2 Chris生活比喻：cache 就像你上學前，媽咪把你的水壺和書包放在門口。不是全部東西都放門口，只放你今天最常用的，這樣出門快很多 / P3 Anna追問：那沒有放在門口的呢？ / P4 Chris技術翻譯：沒放在門口的就是你要用的時候再去房間拿，速度比較慢。電腦也一樣，常用的資料放 cache，速度快；不常用的放硬碟，要時才去拿 / P5 Anna童言反殺：那把拔記住媽咪生日是放在 cache 嗎？因為你好像每年都要重新查一次 / P6 媽咪補刀：我的生日不在你的 cache 裡，我知道，所以我現在自己設鬧鐘提醒你 / P7 收藏金句：「Cache 讓你更快，但你要記得它是暫時的——有些事情不能只靠 cache，要寫進長期記憶」"
+    },
+    {
+      "day": 62,
+      "type": "carousel",
+      "pillar": "home_meme",
+      "theme": "家裡有工程師，週末計畫不能說「到時候再說」",
+      "cover_background": "living_room",
+      "script_hint": "迷因標題：家裡有工程師，不能亂說「再說再說」 / P1 Anna旁白觀察：媽咪說週末要去哪裡玩，把拔說「到時候再說」。把拔後來打開試算表 / P2 Anna旁白觀察：試算表有四個分頁：景點評分、天氣預測、停車場地圖、行程時間軸。「到時候」變成下週五前要確認 / P3 Chris技術邏輯解釋：「到時候再說」在我的系統裡代表：確認需求、評估資源、排入 sprint、測試可行性，然後才能交付 / P4 媽咪生活現實補刀：我是不懂 sprint 啦，但我知道你說到時候，最後都變成我決定 / P5 Chris默默rollback：……試算表先收起來，問媽咪她想去哪 / P6 Tag金句：「Tag 那個說『隨便』然後開了一個決策矩陣的工程師，你不是一個人」"
+    },
+    {
+      "day": 63,
+      "type": "carousel",
+      "pillar": "workplace",
+      "theme": "QA 說：「功能是對的，但不是我要的那種對」",
+      "cover_background": "science_park_lobby",
+      "script_hint": "迷因標題：有一種 Bug 叫做「你做對了，但我不是這個意思」 / P1旁白：Chris 按照規格書完成功能，QA 測試後回覆：「邏輯沒錯，但感覺不對」 / P2旁白：Chris 問：哪裡不對？QA 說：就是……你做的是對的，但不是我要的那種對 / P3旁白荒謬升級：PM 說：我覺得你們說的都對，可以開個會討論一下什麼叫做「那種對」嗎 / P4 Chris困惑：Jira ticket 上的驗收條件，我都通過了。「那種對」的定義在哪個文件？ / P5 Chris工程師視角抱怨：有一種 type error 是人工的，它的錯誤訊息是「不是我要的那種對」 / P6 Chris浮誇崩潰：所以我要開一個新 ticket 叫做「定義正確的定義」，然後估工時 / P7 Tag金句：「Tag 那個聽過『你做的沒錯，但就是不對』的工程師，你有戰友」"
+    },
+    {
+      "day": 64,
+      "type": "carousel",
+      "pillar": "office",
+      "theme": "公司說「要積極主動」，但所有主動都要先開會審核",
+      "cover_background": "science_park_lobby",
+      "script_hint": "荒謬職場標題：積極主動需要三層審核，才算積極主動 / P1 Chris描述事件：公司年度目標寫了「鼓勵積極主動」，Chris 主動提了一個改善流程的想法 / P2 Chris補充荒謬後續：主管說很好，要寫成提案送審；送審要填三張表；填完表要開會說明；開完會要等月底決策會議通過 / P3 Anna小孩邏輯發問：把拔，那積極主動的意思是要先問過別人才能主動嗎？ / P4 Chris用大人話合理化：積極主動是一個精神，但執行需要走程序，程序是為了確保主動的方向正確 / P5 媽咪生活比喻揭示真相：我是不懂審核啦，但我知道你去買我沒說要買的東西也要審核 / P6 黑色幽默金句：「所謂積極主動，是在正確的流程下以正確的速度主動填表」"
+    },
+    {
+      "day": 65,
+      "type": "carousel",
+      "pillar": "tech",
+      "theme": "把拔解釋 Bug 是什麼，Anna：那把拔說話有 bug 的時候是什麼時候？",
+      "cover_background": "dining_room",
+      "script_hint": "技術概念：Bug（程式錯誤）/ P1 Anna生活疑問：把拔說今天工作遇到 bug，Anna 問：bug 是蟲嗎？電腦裡有蟲？ / P2 Chris生活比喻：bug 是程式跑出了你不預期的結果。就像你叫媽咪幫你倒果汁，結果她倒了牛奶。指令沒錯，結果不對，就叫 bug / P3 Anna追問：那誰的問題？是媽咪的 bug 還是你指令的 bug？ / P4 Chris技術翻譯：工程師說，大部分的 bug 都是規格不明確造成的。「倒飲料」這個指令，沒有說清楚要哪一種，所以輸出結果不確定 / P5 Anna童言反殺：那把拔說「等一下」，但等了兩個小時，這是把拔的 bug 還是我理解錯了？ / P6 媽咪補刀：「等一下」這個函式在你把拔身上沒有 timeout 設定，所以它可以無限執行 / P7 收藏金句：「Bug 不可能完全消滅，你能做的是讓每個 bug 都有對應的修復路徑」"
+    },
+    {
+      "day": 66,
+      "type": "carousel",
+      "pillar": "home_meme",
+      "theme": "家裡有工程師，冰箱食材不能用「以後再說」管理",
+      "cover_background": "dining_room",
+      "script_hint": "迷因標題：家裡有工程師，冰箱是有 expiry date 的資料庫 / P1 Anna旁白觀察：媽咪說冰箱裡有剩下的食材，把拔說「放著，以後用」。一個月後那個食材還在 / P2 Anna旁白觀察：把拔說那個食材的 use case 還沒出現，所以還沒到用它的時機 / P3 Chris技術邏輯解釋：食材是一種有 TTL（time to live）的資源，在 TTL 到期前找到 use case 就是合理的資源管理 / P4 媽咪生活現實補刀：我是不懂 TTL 啦，但我知道那個食材的 TTL 昨天已經過期了，我剛丟掉 / P5 Chris默默rollback：……下次買食材要先確認 use case 再購入 / P6 Tag金句：「Tag 那個把冰箱當 backlog 在管理的工程師，你的食材 sprint 規劃需要更新了」"
+    },
+    {
+      "day": 67,
+      "type": "carousel",
+      "pillar": "workplace",
+      "theme": "同事 PR review 只留 LGTM，連檔案都沒打開",
+      "cover_background": "office_desk",
+      "script_hint": "迷因標題：LGTM = Looks Good To Me（我沒看，但我說好） / P1旁白：Chris 提交了一個修改五個檔案、三百行程式的 PR，十分鐘後同事 approve 並留言 LGTM / P2旁白：Chris 打開 review 記錄，同事連第一個檔案都沒展開 / P3旁白荒謬升級：那個 PR 後來 merge 了，上線之後有一個 bug，PM 問：這個有 review 嗎？同事說：有，我 approve 的 / P4 Chris困惑：LGTM 這四個字母的含金量，在不同工程師手上差距是宇宙級別的 / P5 Chris工程師視角抱怨：有一種 code review 是形式審查——你批准，我放行，bug 是我們共同的問題 / P6 Chris浮誇崩潰：下次我要在 PR 裡藏一行 print(「你根本沒看吧」)，然後等上線 / P7 Tag金句：「Tag 那個被 LGTM 過、結果上線出問題、然後要自己修的工程師，LGTM 是愛」"
+    },
+    {
+      "day": 68,
+      "type": "carousel",
+      "pillar": "tech",
+      "theme": "把拔解釋 Deploy 是什麼，Anna：那把拔去上班是被 deploy 到辦公室嗎？",
+      "cover_background": "office_desk",
+      "script_hint": "技術概念：Deploy（部署）/ P1 Anna生活疑問：把拔說今天要 deploy，Anna 問：deploy 是什麼？是去哪裡嗎？ / P2 Chris生活比喻：deploy 就是把做好的程式，從工程師的電腦移到真正給大家用的地方。就像媽咪做好便當，放進你的書包，你帶去學校——這就是 deploy / P3 Anna追問：那我每天去學校也是 deploy 嗎？ / P4 Chris技術翻譯：對！你就是一個需要每天 deploy 到學校的服務。媽咪負責打包你，爸爸負責把你送到目的地，老師負責驗收你是否正常運作 / P5 Anna童言反殺：那把拔去上班是被媽咪 deploy 到辦公室嗎？因為媽咪會檢查你有沒有帶鑰匙 / P6 媽咪補刀：對，而且你每次 deploy 失敗（出門忘東西）都是我發現的，我是你的 deployment checker / P7 收藏金句：「Deploy 不只是把程式搬過去，你要確認它在新環境裡能正常運作——就像便當帶到學校還要能吃」"
+    },
+    {
+      "day": 69,
+      "type": "carousel",
+      "pillar": "office",
+      "theme": "公司說扁平化管理，但一封信要 CC 八個主管才算送出",
+      "cover_background": "science_park_lobby",
+      "script_hint": "荒謬職場標題：扁平化管理＝八層CC ÷ 零決策速度 / P1 Chris描述事件：Chris 要請一天假，HR 說我們公司是扁平化管理，直接發信給主管就好 / P2 Chris補充荒謬後續：主管說要 CC 部門主管、HR主管、專案負責人，另外副本給法務確認假別，然後在系統上另外填一份申請 / P3 Anna小孩邏輯發問：把拔，扁平化是什麼意思？是沒有高低嗎？那為什麼要傳給八個人？ / P4 Chris用大人話合理化：扁平化是指決策精神是開放的，但信息流轉需要多方知情以確保透明度 / P5 媽咪生活比喻揭示真相：我是不懂扁平化啦，但我知道你請一天假，我比你老闆更早知道結果 / P6 黑色幽默金句：「扁平化管理的特徵：沒有人可以獨自決定，所以每個人都需要被知會」"
+    },
+    {
+      "day": 70,
+      "type": "carousel",
+      "pillar": "home_meme",
+      "theme": "家裡有工程師，不能對他說「隨便」",
+      "cover_background": "living_room",
+      "script_hint": "迷因標題：家裡有工程師，「隨便」是一個需要決策樹的詞 / P1 Anna旁白觀察：媽咪說今晚吃什麼隨便，把拔說好，然後打開了一個 Excel / P2 Anna旁白觀察：Excel 有三個欄位：今天吃過的、這週重複次數、附近有哪些店。把拔說他需要分析一下「隨便的最優解」 / P3 Chris技術邏輯解釋：「隨便」是 undefined input，對工程師來說 undefined 需要被解析成具體的值才能執行，否則程式會當機 / P4 媽咪生活現實補刀：我是不懂 undefined 啦，但我知道你分析了二十分鐘，最後還是我決定的 / P5 Chris默默rollback：……那個 Excel 先存起來，下次直接沿用 / P6 Tag金句：「Tag 那個聽到『隨便』然後開始建資料庫的工程師，媽咪愛你」"
     }
   ]
 }
