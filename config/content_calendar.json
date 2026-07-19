@@ -667,6 +667,62 @@
       "theme": "家裡有工程師，掃地機器人設定不能亂動",
       "cover_background": "living_room",
       "script_hint": "迷因標題：家裡有工程師，掃地機器人比Anna還有行程 / P1 Anna旁白觀察：把拔花了一個下午幫掃地機器人劃地圖，把家分成七個區域，每個區域有不同的打掃時間和清潔強度 / P2 Anna旁白觀察：冰箱旁邊設了禁止區域，把拔說那裡的感應器精準度不夠，進去出不來會浪費電 / P3 Chris技術邏輯解釋：路徑規劃是一個optimization問題，你要在最短時間、最少重複路徑、最低碰撞率的條件下完成全區域覆蓋，這叫Coverage Path Planning / P4 媽咪生活現實補刀：我是不懂Coverage啦，但我知道你設定了一個小時，機器人還是每次卡在椅腳，然後它就放棄，傳訊息說任務完成了 / P5 Chris默默rollback：……把禁止區域範圍擴大，把所有椅腳都圈起來 / P6 Tag金句：「Tag 那個把掃地機器人設定成比公司SLA還嚴格、結果它還是說任務完成然後躺在角落的工程師」"
+    },
+    {
+      "day": 78,
+      "type": "carousel",
+      "pillar": "workplace",
+      "theme": "Code Review 意見寫了五十條，最後合併的是原始版本",
+      "cover_background": "office_desk",
+      "script_hint": "迷因標題：五十條 review 意見的終點，是 merge 原版 / P1旁白：Chris 提了一個 PR，同事 review 認真，留了五十條意見：格式、命名、架構、安全性全都提 / P2旁白：Chris 一一回覆、修改、再回覆，來回了三輪，歷時四天 / P3旁白荒謬升級：最後 PM 說上線時間不能延，直接拍板 merge 第一版——因為第一版測試已經過了 / P4 Chris困惑：我花了四天回覆五十條意見，最後用的是四天前的版本 / P5 Chris工程師視角抱怨：Code Review 的目的是提升品質，但品質在 deadline 面前，優先順序不明確 / P6 Chris浮誇崩潰：五十條意見，零條被採納，一百分鐘的努力，貢獻了四個字的 commit message：revert to v1 / P7 Tag金句：「Tag 那個認真 review、最後被告知直接 merge 舊版的工程師，你的意見被珍惜過，只是沒有被用到」"
+    },
+    {
+      "day": 79,
+      "type": "carousel",
+      "pillar": "tech",
+      "theme": "把拔解釋 Queue 是什麼，Anna：那把拔你的 Queue 裡有我嗎",
+      "cover_background": "dining_room",
+      "script_hint": "技術概念：Queue（佇列，先進先出的排隊機制）/ P1 Anna生活疑問：把拔你說你有一個 queue，那 queue 是什麼？是排隊嗎？ / P2 Chris生活比喻：Queue 就是排隊的規則。第一個進來的，第一個被處理。就像你去麵包店排隊，先到的先拿到麵包，後到的等 / P3 Anna追問：那如果你很急，可以插隊嗎？ / P4 Chris技術翻譯：可以，那叫做 Priority Queue，有緊急程度的排隊。系統崩潰是P0，直接跳到隊伍最前面；一般需求是P3，乖乖等 / P5 Anna童言反殺：把拔，你的 Queue 裡有我嗎？因為我上週叫你陪我玩，你說等一下，我等了三個小時你還在改 bug / P6 媽咪補刀：你的 Queue 我看過，家事是 P3，你的 PR 是 P0，Anna 的「等一下」沒有 priority 欄位，所以一直沒被處理到 / P7 收藏金句：「Queue 讓系統有序，但有些事不能只靠排隊等——它需要你主動跳出 Queue 去做。Tag 那個 P0 全給 bug、P1 全給 deadline 的工程師把拔」"
+    },
+    {
+      "day": 80,
+      "type": "carousel",
+      "pillar": "home_meme",
+      "theme": "家裡有工程師，充電線不能亂歸位",
+      "cover_background": "office_desk",
+      "script_hint": "迷因標題：家裡有工程師，充電線有它的 naming convention / P1 Anna旁白觀察：把拔桌上的充電線分成三類，用不同顏色的束帶整理，每條線的位置是固定的 / P2 Anna旁白觀察：媽咪隨手把一條線插在把拔的MacBook充電位置，把拔說「等等，那條是iPad的線，功率不對」 / P3 Chris技術邏輯解釋：這不是在挑剔，這是 dependency management。每條線有額定功率，用錯會充電慢、長期還會傷電池，這叫資源分配錯誤 / P4 媽咪生活現實補刀：我是不懂依賴管理啦，但我知道你的線多到可以辦一個充電線博物館，每條都有名字，我每次拿錯你就出現了 / P5 Chris默默rollback：……在每條充電線上貼標籤，分別寫上用途和功率，然後說「這樣應該清楚了」 / P6 Tag金句：「Tag 那個家裡充電線比電腦周邊還多、每條都不能亂動的工程師，以及那個每次都拿錯還是要被說明的另一半」"
+    },
+    {
+      "day": 81,
+      "type": "carousel",
+      "pillar": "office",
+      "theme": "KPI 不是設到最高，是設到確定能達到的高度",
+      "cover_background": "dining_room",
+      "script_hint": "荒謬職場標題：最厲害的 KPI 設定技巧：不是做到最好，是讓指標看起來最好 / P1 Chris描述事件：年度 KPI 設定會議，主管問今年目標要設多少，大家互相看看，沒人先開口 / P2 Chris補充荒謬後續：最後設定的目標是去年實績的103%，不是因為有把握成長多少，是因為「103%說出去好看，102%太沒野心，105%做不到」 / P3 Anna小孩邏輯發問：如果你覺得可以做到150，為什麼要說103？這樣不是說謊嗎？ / P4 Chris用大人話合理化：這叫可達成目標原則，KPI 設太高會打擊士氣，設到有把握的高度才能維持團隊的動力和信心 / P5 媽咪生活比喻揭示真相：我是不懂士氣啦，但我知道你叫Anna整理房間，她說「差不多整理好了」，然後一個玩具放錯地方你就說完成了，這是同款道理嗎 / P6 黑色幽默金句：「KPI 設定的藝術不是衝高，是設到完成時剛好有一點點成就感，不能多。Tag 那個每年一月都在討論103%還是105%的人。」"
+    },
+    {
+      "day": 82,
+      "type": "carousel",
+      "pillar": "workplace",
+      "theme": "User說「你理解我的意思就好」，工程師理解完開發了三個月，User說理解錯了",
+      "cover_background": "office_desk",
+      "script_hint": "迷因標題：「你理解就好」是工程師聽過最危險的五個字 / P1旁白：需求說明會結束，User說「這個功能大概就這樣，細節你理解我的意思就好，不用我每個點都說得很清楚」 / P2旁白：Chris 理解了，開發了三個月，做了一個完整的功能，Demo 當天充滿信心 / P3旁白荒謬升級：User 看了十秒後說：「不是這個意思，我說的理解不是這個，我以為你懂的那種」 / P4 Chris困惑：我理解了。我真的理解了。只是我理解的，和你要我理解的，不是同一個理解 / P5 Chris工程師視角：需求規格存在的原因是把「理解」這個模糊的動詞，變成一個可以被測試的輸出 / P6 Chris浮誇崩潰：「你理解我的意思就好」翻譯成工程師語言是：「請你自行填補所有邊界條件、例外情境、UI細節，然後做錯了算你的」 / P7 Tag金句：「Tag 那個聽過『你懂就好』然後做了三個月發現不是那個懂的工程師，以及那個說『你懂』的人」"
+    },
+    {
+      "day": 83,
+      "type": "carousel",
+      "pillar": "tech",
+      "theme": "把拔解釋 Load Balancing 是什麼，Anna：就是家事不能只叫一個人做？",
+      "cover_background": "living_room",
+      "script_hint": "技術概念：Load Balancing（負載均衡）/ P1 Anna生活疑問：把拔你說伺服器會壞掉，怎麼讓它不壞掉？ / P2 Chris生活比喻：不讓一台電腦做所有的事，把工作分給很多台電腦一起做，這叫 Load Balancing，負載均衡。就像洗碗不只叫一個人洗，把碗分給三個人洗，速度快而且一個人累了還有另外兩個人繼續 / P3 Anna追問：那在我們家是誰做 Load Balancing？是媽咪嗎？ / P4 Chris技術翻譯：Load Balancer 負責決定工作要分給哪一台電腦，它要看哪台最閒就分給誰。所以 Load Balancer 不是做事的，是分配工作的 / P5 Anna童言反殺：那媽咪是 Load Balancer 對不對？因為她負責決定把拔做什麼、Anna做什麼，而且她自己也全部做了 / P6 媽咪補刀：我是不懂 Load Balancer 啦，但我知道你家的 load 分配，我是 balancer 也是 server，你是只接受 request 的那台 / P7 收藏金句：「好的系統需要好的 Load Balancer——有些家庭的 Load Balancer 叫做媽咪，而且她沒有 health check 的機制。Tag 那個讓另一半扛所有 load 的工程師。」"
+    },
+    {
+      "day": 84,
+      "type": "carousel",
+      "pillar": "home_meme",
+      "theme": "家裡有工程師，睡前不能問他今天過得怎樣",
+      "cover_background": "bedroom",
+      "script_hint": "迷因標題：家裡有工程師，「今天怎樣」是一個需要 full log review 的問題 / P1 Anna旁白觀察：媽咪睡前問把拔今天工作怎樣，把拔說「等一下，讓我想一下」然後盯著天花板 / P2 Anna旁白觀察：把拔開始重播今天每一件事：早上的 standup、那個 PR 的 review 意見、那個 Query 跑太慢的問題、下午的需求說明會 / P3 Chris技術邏輯解釋：「今天過得怎樣」是一個很大的問題，它需要我從 AM 9:00 到現在做完整的 log review，找出今天的 critical event，然後摘要成一個可以溝通的版本 / P4 媽咪生活現實補刀：我是不懂 log review 啦，但我知道我問的「怎樣」，不需要精確到分鐘，「還好」或「很累」就夠了 / P5 Chris默默rollback：……「……還可以。你今天呢？」 / P6 Tag金句：「Tag 那個被問『今天怎樣』會開始跑 full stack trace 的工程師，以及那個只想聽兩個字但等了三分鐘的另一半」"
     }
   ]
 }
